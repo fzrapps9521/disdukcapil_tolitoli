@@ -3,1722 +3,1174 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DISDUKCAPIL Kab. Tolitoli - Portal Berita & Informasi</title>
-    <!-- Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Font Awesome untuk Icon -->
+    <title>Portal DISDUKCAPIL Kab. Tolitoli</title>
+    
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- FontAwesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- SweetAlert2 -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
     <style>
-        body {
-            font-family: 'Inter', sans-serif;
+        :root { 
+            --primary-color: #0D47A1; /* Deep Government Blue */
+            --secondary-color: #1976D2;
+            --accent-color: #FFC107;
+            --bg-light: #F4F7F6; 
+            --text-dark: #2C3E50;
+            --border-radius: 12px;
         }
-        .rich-editor iframe {
-            width: 100%;
-            height: 300px;
-            border: 1px solid #e2e8f0;
-            border-radius: 0.375rem;
+        
+        body { 
+            font-family: 'Inter', sans-serif; 
+            background-color: var(--bg-light); 
+            color: var(--text-dark);
         }
-        /* Custom scrollbar untuk editor */
-        ::-webkit-scrollbar {
-            width: 8px;
-            height: 8px;
+        
+        .hidden { display: none !important; }
+
+        /* Public Navbar Styling */
+        .top-bar {
+            background-color: var(--primary-color);
+            color: white;
+            font-size: 0.85rem;
+            padding: 8px 0;
         }
-        ::-webkit-scrollbar-track {
-            background: #f1f5f9; 
+        .navbar-custom {
+            background-color: white;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            padding: 15px 0;
         }
-        ::-webkit-scrollbar-thumb {
-            background: #cbd5e1; 
-            border-radius: 4px;
+        .navbar-brand-custom {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 700;
+            color: var(--primary-color);
+            text-decoration: none;
+            font-size: 1.25rem;
         }
-        ::-webkit-scrollbar-thumb:hover {
-            background: #94a3b8; 
+        .nav-link-custom {
+            color: var(--text-dark);
+            font-weight: 500;
+            margin: 0 5px;
+            padding: 8px 15px;
+            border-radius: 20px;
+            transition: all 0.3s ease;
+        }
+        .nav-link-custom:hover, .nav-link-custom.active {
+            background-color: rgba(13, 71, 161, 0.1);
+            color: var(--primary-color);
+        }
+
+        /* Carousel Styling */
+        .hero-carousel {
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            margin-top: 20px;
+        }
+        .hero-carousel img { 
+            height: 500px; 
+            object-fit: cover; 
+        }
+        .carousel-caption-custom {
+            position: absolute;
+            bottom: 0; left: 0; right: 0;
+            background: linear-gradient(to top, rgba(0,0,0,0.9), transparent);
+            padding: 40px 20px 20px;
+            color: white;
+            text-align: left;
+        }
+
+        /* Card Styling */
+        .card-modern {
+            border: none;
+            border-radius: var(--border-radius);
+            box-shadow: 0 5px 20px rgba(0,0,0,0.05);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            height: 100%;
+            overflow: hidden;
+        }
+        .card-modern:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        }
+        .card-modern img {
+            height: 200px;
+            object-fit: cover;
+        }
+        .badge-category {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            background-color: var(--accent-color);
+            color: #000;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        /* Admin Sidebar */
+        .admin-sidebar {
+            background-color: #1E293B;
+            width: 260px;
+            min-height: 100vh;
+            color: #94A3B8;
+            transition: all 0.3s ease;
+        }
+        .admin-sidebar a {
+            color: #94A3B8;
+            text-decoration: none;
+            padding: 12px 20px;
+            display: block;
+            border-left: 4px solid transparent;
+            transition: all 0.2s ease;
+        }
+        .admin-sidebar a:hover, .admin-sidebar a.active {
+            background-color: #0F172A;
+            color: white;
+            border-left-color: var(--secondary-color);
+        }
+        .admin-header {
+            background-color: white;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            padding: 15px 30px;
         }
     </style>
 </head>
-<body class="bg-slate-50 text-slate-800 min-h-screen flex flex-col">
+<body>
 
-    <!-- TOP BAR -->
-    <div class="bg-gradient-to-r from-blue-900 to-indigo-900 text-white text-xs py-2 px-4 flex justify-between items-center border-b border-blue-800">
-        <div class="flex items-center space-x-4">
-            <span><i class="fa-solid fa-location-dot text-yellow-400 mr-1"></i> <span id="top-address">Kab. Tolitoli, Sulawesi Tengah</span></span>
-            <span class="hidden md:inline">|</span>
-            <span class="hidden md:inline"><i class="fa-solid fa-envelope text-yellow-400 mr-1"></i> <span id="top-email">info@disdukcapil.tolitolikab.go.id</span></span>
-        </div>
-        <!-- Penampung tombol admin dinamis -->
-        <div class="flex items-center space-x-3" id="top-admin-actions">
-            <!-- Tombol Setup akan muncul di sini setelah Login -->
-        </div>
-    </div>
-
-    <!-- MAIN HEADER -->
-    <header class="bg-white shadow-sm sticky top-0 z-40 border-b border-slate-200">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-            <!-- Logo & Title -->
-            <div class="flex items-center space-x-4 cursor-pointer" onclick="switchView('home')">
-                <!-- Lambang Daerah Dinamis -->
-                <div id="logo-container" class="w-12 h-12 bg-blue-900 rounded-full flex items-center justify-center border-2 border-yellow-400 shadow-md flex-shrink-0 overflow-hidden">
-                    <i id="default-logo-icon" class="fa-solid fa-landmark text-white text-xl"></i>
-                    <img id="custom-logo-img" src="" class="w-full h-full object-cover hidden bg-white" alt="Logo Instansi">
+    <div id="public-view">
+        <!-- Top Info Bar -->
+        <div class="top-bar d-none d-md-block">
+            <div class="container d-flex justify-content-between">
+                <div>
+                    <i class="fas fa-phone-alt me-2"></i> (0453) 123456
+                    <span class="mx-3">|</span>
+                    <i class="fas fa-envelope me-2"></i> info@disdukcapil.tolitolikab.go.id
                 </div>
                 <div>
-                    <h1 class="text-lg font-bold text-blue-950 uppercase tracking-tight leading-tight" id="header-site-title">DISDUKCAPIL</h1>
-                    <p class="text-[11px] text-slate-500 font-semibold tracking-wider uppercase">Portal Informasi & Berita</p>
-                </div>
-            </div>
-
-            <!-- Public Navigation & Search -->
-            <div class="flex flex-wrap items-center gap-3">
-                <nav class="flex space-x-1">
-                    <button onclick="switchView('home')" class="nav-btn px-3 py-2 text-sm font-medium rounded-md hover:text-blue-900 hover:bg-blue-50 transition active-tab" id="nav-home">Beranda</button>
-                </nav>
-
-                <!-- Search Input -->
-                <div class="relative w-full sm:w-48 lg:w-64">
-                    <input type="text" id="search-input" placeholder="Cari informasi..." class="w-full bg-slate-100 pl-9 pr-4 py-2 text-sm rounded-lg border-transparent focus:bg-white focus:border-blue-300 focus:ring-2 focus:ring-blue-100 outline-none transition-all" onkeyup="handleSearch(event)">
-                    <i class="fa-solid fa-magnifying-glass absolute left-3 top-2.5 text-slate-400 text-sm"></i>
-                </div>
-
-                <!-- Login / Dashboard Area Button -->
-                <div id="auth-header-btn">
-                    <!-- Dinamis terisi oleh JS -->
+                    <a href="#" class="text-white text-decoration-none me-3"><i class="fab fa-facebook"></i></a>
+                    <a href="#" class="text-white text-decoration-none me-3"><i class="fab fa-instagram"></i></a>
+                    <a href="#" class="text-white text-decoration-none" onclick="app.showLoginModal()"><i class="fas fa-lock"></i> Login Admin</a>
                 </div>
             </div>
         </div>
-    </header>
 
-    <!-- LIVE/DEMO MODE BANNER -->
-    <div id="mode-banner" class="bg-amber-50 border-b border-amber-200 py-2 px-4 text-center text-xs text-amber-800 flex justify-center items-center gap-2">
-        <i class="fa-solid fa-circle-info text-amber-600"></i>
-        <span><strong>Mode Simulasi Offline Aktif.</strong> Perubahan data tidak akan tersimpan permanen. Masukkan URL Apps Script di menu Panduan Setup untuk menggunakan Google Sheets.</span>
+        <!-- Main Navbar -->
+        <nav class="navbar navbar-expand-lg navbar-custom sticky-top">
+            <div class="container">
+                <a class="navbar-brand-custom" href="#" onclick="app.navigate('home')">
+                    <i class="fa-solid fa-id-card text-primary fs-2"></i>
+                    <div>
+                        <div style="font-size: 1.1rem; line-height: 1.2;">DISDUKCAPIL</div>
+                        <div style="font-size: 0.8rem; font-weight: 400; color: #666;">Kabupaten Tolitoli</div>
+                    </div>
+                </a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav ms-auto" id="public-nav-links">
+                        <!-- Links generated dynamically -->
+                    </ul>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Public Content Area -->
+        <div id="public-content" class="container mt-4 mb-5">
+            <!-- Content Injected Here -->
+        </div>
+
+        <!-- Footer -->
+        <footer class="bg-dark text-white pt-5 pb-4 mt-5">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-4 mb-3">
+                        <h5 class="text-white mb-3">DISDUKCAPIL Kab. Tolitoli</h5>
+                        <p class="text-muted">Melayani masyarakat dengan sepenuh hati, cepat, tepat, dan transparan.</p>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <h5 class="text-white mb-3">Tautan Cepat</h5>
+                        <ul class="list-unstyled text-muted">
+                            <li><a href="#" class="text-muted text-decoration-none" onclick="app.navigate('kategori', 'Layanan')">Layanan Kami</a></li>
+                            <li><a href="#" class="text-muted text-decoration-none" onclick="app.navigate('kategori', 'Pengaduan')">Pengaduan Masyarakat</a></li>
+                        </ul>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <h5 class="text-white mb-3">Kontak</h5>
+                        <ul class="list-unstyled text-muted">
+                            <li><i class="fas fa-map-marker-alt me-2"></i> Jl. Magamu No.123, Tolitoli</li>
+                            <li><i class="fas fa-phone me-2"></i> (0453) 123456</li>
+                        </ul>
+                    </div>
+                </div>
+                <hr class="border-secondary">
+                <div class="text-center text-muted small">
+                    &copy; 2026 DISDUKCAPIL Kabupaten Tolitoli. All rights reserved.
+                </div>
+            </div>
+        </footer>
     </div>
 
-    <!-- MAIN WRAPPER -->
-    <main class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6">
-
-        <!-- ==================== PUBLIC VIEW: HOME ==================== -->
-        <section id="view-home" class="view-section space-y-8">
-            
-            <!-- Hero / Carousel Banner -->
-            <div id="carousel-container" class="relative rounded-2xl overflow-hidden h-64 md:h-[400px] shadow-lg group bg-slate-200 border border-slate-200">
-                <div id="carousel-slides" class="w-full h-full relative">
-                    <!-- Slides injected by JS -->
+    <div id="admin-view" class="hidden">
+        <div class="d-flex">
+            <!-- Sidebar -->
+            <nav class="admin-sidebar d-flex flex-column flex-shrink-0">
+                <div class="p-4 d-flex align-items-center gap-3">
+                    <i class="fa-solid fa-id-card fs-3 text-white"></i>
+                    <h5 class="mb-0 text-white fw-bold">Admin Panel</h5>
                 </div>
-                
-                <!-- Text Overlay -->
-                <div class="absolute inset-0 bg-gradient-to-t from-blue-950/90 via-blue-900/40 to-transparent flex flex-col justify-end p-6 md:p-10 z-10 pointer-events-none">
-                    <span class="bg-yellow-500 text-blue-950 font-bold text-[10px] sm:text-xs px-3 py-1 rounded-full uppercase tracking-wider w-max mb-3 shadow-sm">Portal Informasi Terpadu</span>
-                    <h2 class="text-2xl md:text-4xl lg:text-5xl font-extrabold tracking-tight text-white mb-2 drop-shadow-lg" id="hero-title-text">Website Resmi Instansi</h2>
-                    <p class="text-blue-100 text-sm md:text-base max-w-2xl drop-shadow-md hidden sm:block">Melayani masyarakat dengan informasi yang cepat, transparan, akurat, dan terpercaya.</p>
-                </div>
+                <ul class="nav nav-pills flex-column mb-auto">
+                    <li class="nav-item">
+                        <a href="#" class="nav-link admin-nav-link" data-target="dashboard" onclick="app.adminNavigate('dashboard')">
+                            <i class="fas fa-chart-line fa-fw me-2"></i> Dashboard
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" class="nav-link admin-nav-link" data-target="banner" onclick="app.adminNavigate('banner')">
+                            <i class="fas fa-images fa-fw me-2"></i> Kelola Banner
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" class="nav-link admin-nav-link" data-target="artikel" onclick="app.adminNavigate('artikel')">
+                            <i class="fas fa-newspaper fa-fw me-2"></i> Kelola Artikel
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" class="nav-link admin-nav-link" data-target="pengaduan" onclick="app.adminNavigate('pengaduan')">
+                            <i class="fas fa-comments fa-fw me-2"></i> Pengaduan
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" class="nav-link admin-nav-link" data-target="survey" onclick="app.adminNavigate('survey')">
+                            <i class="fas fa-qrcode fa-fw me-2"></i> Survey Kepuasan
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" class="nav-link admin-nav-link" data-target="user" onclick="app.adminNavigate('user')">
+                            <i class="fas fa-users fa-fw me-2"></i> Manajemen User
+                        </a>
+                    </li>
+                    <li class="mt-4">
+                        <a href="#" class="nav-link text-danger" onclick="app.logout()">
+                            <i class="fas fa-sign-out-alt fa-fw me-2"></i> Keluar
+                        </a>
+                    </li>
+                </ul>
+            </nav>
 
-                <!-- Carousel Controls -->
-                <button onclick="prevSlide()" class="absolute left-4 top-1/2 -translate-y-1/2 bg-white/20 hover:bg-white/40 text-white w-10 h-10 rounded-full flex items-center justify-center backdrop-blur-sm z-20 opacity-0 group-hover:opacity-100 transition-opacity focus:outline-none"><i class="fa-solid fa-chevron-left"></i></button>
-                <button onclick="nextSlide()" class="absolute right-4 top-1/2 -translate-y-1/2 bg-white/20 hover:bg-white/40 text-white w-10 h-10 rounded-full flex items-center justify-center backdrop-blur-sm z-20 opacity-0 group-hover:opacity-100 transition-opacity focus:outline-none"><i class="fa-solid fa-chevron-right"></i></button>
-                
-                <!-- Carousel Indicators -->
-                <div id="carousel-dots" class="absolute bottom-4 right-6 flex space-x-2 z-20">
-                    <!-- Dots injected by JS -->
-                </div>
-            </div>
-
-            <!-- Categories Filter Badges -->
-            <div class="flex flex-col space-y-3">
-                <div class="flex justify-between items-end">
-                    <h3 class="text-sm font-bold uppercase tracking-wider text-slate-500 flex items-center gap-2"><i class="fa-solid fa-layer-group"></i> Filter Kategori</h3>
-                    <button onclick="filterCategory('')" class="text-xs text-blue-700 hover:text-blue-900 font-semibold" id="btn-clear-filter">Semua Berita</button>
-                </div>
-                <div class="flex flex-wrap gap-2" id="public-categories-list">
-                    <!-- Dinamis dari JS -->
-                </div>
-            </div>
-
-            <!-- Blog Grid Section -->
-            <div class="space-y-4">
-                <div class="flex justify-between items-center border-b border-slate-200 pb-2">
-                    <h3 class="text-xl font-extrabold text-blue-950 flex items-center gap-2">
-                        <i class="fa-solid fa-newspaper text-blue-700"></i>
-                        <span id="blog-grid-title">Publikasi Terbaru</span>
-                    </h3>
-                    <span class="text-xs font-semibold text-slate-500 bg-slate-100 px-2.5 py-1 rounded-full" id="post-count-badge">0 Artikel</span>
-                </div>
-
-                <!-- Cards Grid -->
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="public-posts-grid">
-                    <!-- Dinamis dari JS -->
-                </div>
-
-                <!-- Empty State -->
-                <div id="posts-empty-state" class="hidden text-center py-16 bg-white rounded-2xl border border-dashed border-slate-300">
-                    <div class="w-20 h-20 bg-slate-50 rounded-full flex items-center justify-center mx-auto mb-4">
-                        <i class="fa-regular fa-folder-open text-slate-400 text-4xl"></i>
-                    </div>
-                    <p class="text-slate-700 font-bold text-lg">Tidak ada publikasi ditemukan.</p>
-                    <p class="text-slate-400 text-sm mt-1">Belum ada artikel yang dipublish untuk kategori atau pencarian ini.</p>
-                </div>
-            </div>
-        </section>
-
-        <!-- ==================== PUBLIC VIEW: DETAIL ARTICLE ==================== -->
-        <section id="view-post-detail" class="view-section hidden max-w-4xl mx-auto bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
-            <!-- Back button Top -->
-            <div class="p-4 border-b bg-slate-50">
-                <button onclick="switchView('home')" class="text-slate-600 hover:text-blue-800 font-semibold text-sm flex items-center gap-1 transition">
-                    <i class="fa-solid fa-arrow-left-long"></i> Kembali ke Daftar Berita
-                </button>
-            </div>
-
-            <!-- Article Image -->
-            <div class="w-full h-64 md:h-[450px] relative bg-slate-100">
-                <img id="detail-image" src="" alt="Thumbnail Berita" class="w-full h-full object-cover">
-            </div>
-            
-            <div class="p-6 md:p-10 space-y-6">
-                <!-- Meta -->
-                <div class="flex flex-wrap items-center gap-4 text-xs md:text-sm text-slate-500">
-                    <span id="detail-category" class="bg-blue-100 text-blue-800 font-bold px-3 py-1 rounded-full uppercase tracking-wider text-[10px]">Kategori</span>
-                    <span class="flex items-center gap-1.5"><i class="fa-regular fa-calendar text-blue-700"></i> <span id="detail-date" class="font-medium">12 Juni 2026</span></span>
-                    <span class="flex items-center gap-1.5"><i class="fa-regular fa-user text-blue-700"></i> <span id="detail-author" class="font-medium">Admin</span></span>
-                </div>
-
-                <!-- Title -->
-                <h1 id="detail-title" class="text-2xl md:text-4xl font-extrabold text-slate-800 leading-tight">Judul Berita</h1>
-
-                <hr class="border-slate-100">
-
-                <!-- Content -->
-                <article id="detail-content" class="prose max-w-none text-slate-700 leading-relaxed text-base space-y-5">
-                    <!-- Konten artikel di-render di sini -->
-                </article>
-
-                <!-- Share Buttons -->
-                <div class="border-t border-slate-100 mt-10 pt-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-                    <span class="text-sm font-bold text-slate-800">Bagikan informasi ini:</span>
-                    <div class="flex items-center space-x-2">
-                        <button onclick="shareSocial('whatsapp')" class="bg-[#25D366] hover:bg-[#1DA851] text-white p-2.5 rounded-full shadow transition" title="Share via WhatsApp">
-                            <i class="fa-brands fa-whatsapp text-lg w-5 h-5 flex items-center justify-center"></i>
+            <!-- Main Admin Content -->
+            <div class="flex-grow-1 bg-light">
+                <header class="admin-header d-flex justify-content-between align-items-center">
+                    <h4 class="mb-0 fw-bold" id="admin-page-title">Dashboard</h4>
+                    <div class="d-flex align-items-center gap-3">
+                        <button class="btn btn-outline-primary btn-sm" onclick="app.navigate('home')">
+                            <i class="fas fa-external-link-alt me-1"></i> Lihat Website
                         </button>
-                        <button onclick="shareSocial('facebook')" class="bg-[#1877F2] hover:bg-[#0C63D4] text-white p-2.5 rounded-full shadow transition" title="Share via Facebook">
-                            <i class="fa-brands fa-facebook-f text-lg w-5 h-5 flex items-center justify-center"></i>
-                        </button>
-                        <button onclick="shareSocial('twitter')" class="bg-[#1DA1F2] hover:bg-[#0C85D0] text-white p-2.5 rounded-full shadow transition" title="Share via Twitter">
-                            <i class="fa-brands fa-twitter text-lg w-5 h-5 flex items-center justify-center"></i>
-                        </button>
-                        <button onclick="shareSocial('copy')" class="bg-slate-200 hover:bg-slate-300 text-slate-700 px-4 py-2.5 rounded-full text-sm font-semibold flex items-center gap-2 transition ml-2">
-                            <i class="fa-solid fa-link"></i> Salin Tautan
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- ==================== VIEW: LOGIN ==================== -->
-        <section id="view-login" class="view-section hidden max-w-md mx-auto py-10">
-            <div class="bg-white rounded-2xl shadow-xl border border-slate-100 p-8 space-y-8">
-                <div class="text-center space-y-3">
-                    <div class="w-16 h-16 bg-gradient-to-br from-blue-800 to-blue-950 rounded-2xl flex items-center justify-center shadow-lg mx-auto transform rotate-3">
-                        <i class="fa-solid fa-shield-halved text-white text-2xl -rotate-3"></i>
-                    </div>
-                    <div>
-                        <h2 class="text-2xl font-extrabold text-slate-800">Portal Internal</h2>
-                        <p class="text-sm text-slate-500 font-medium">Sistem Manajemen Konten Website</p>
-                    </div>
-                </div>
-
-                <div id="login-error" class="hidden bg-rose-50 text-rose-600 text-sm p-3 rounded-lg border border-rose-200 text-center font-medium">
-                    Email atau kata sandi salah!
-                </div>
-
-                <form id="login-form" onsubmit="handleLogin(event)" class="space-y-5">
-                    <div class="space-y-1.5">
-                        <label class="text-xs font-bold uppercase tracking-wider text-slate-600">Alamat Email</label>
-                        <div class="relative">
-                            <input type="email" id="login-email" required placeholder="akun@domain.com" class="w-full border border-slate-300 rounded-lg px-3 py-3 pl-10 focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-200 text-sm transition-all bg-slate-50 focus:bg-white">
-                            <i class="fa-solid fa-envelope absolute left-3.5 top-3.5 text-slate-400"></i>
+                        <div class="d-flex align-items-center gap-2">
+                            <div class="bg-primary rounded-circle text-white d-flex justify-content-center align-items-center" style="width:35px;height:35px;">A</div>
+                            <span class="fw-semibold">Admin Sistem</span>
                         </div>
                     </div>
-                    <div class="space-y-1.5">
-                        <label class="text-xs font-bold uppercase tracking-wider text-slate-600">Kata Sandi</label>
-                        <div class="relative">
-                            <input type="password" id="login-password" required placeholder="••••••••" class="w-full border border-slate-300 rounded-lg px-3 py-3 pl-10 focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-200 text-sm transition-all bg-slate-50 focus:bg-white">
-                            <i class="fa-solid fa-lock absolute left-3.5 top-3.5 text-slate-400"></i>
+                </header>
+                <div class="p-4" id="admin-content-dynamic">
+                    <!-- Admin Content Injected Here -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Login Modal -->
+    <div class="modal fade" id="loginModal" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content border-0 shadow-lg">
+                <div class="modal-header bg-primary text-white border-0">
+                    <h5 class="modal-title"><i class="fas fa-lock me-2"></i> Login Akses</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body p-4">
+                    <form id="loginForm" onsubmit="app.handleLogin(event)">
+                        <div class="mb-3">
+                            <label class="form-label text-muted small">Username / Email</label>
+                            <input type="text" id="loginEmail" class="form-control" value="admin" required>
                         </div>
-                    </div>
-                    <button type="submit" class="w-full bg-blue-700 hover:bg-blue-800 text-white font-bold py-3 rounded-lg transition shadow-md flex justify-center items-center gap-2">
-                        <span>Otorisasi Masuk</span>
-                        <i class="fa-solid fa-arrow-right-to-bracket"></i>
-                    </button>
-                </form>
-
-                <div class="text-center text-xs text-slate-400 border-t pt-4">
-                    <p>Hanya untuk Admin dan Editor yang berwenang.</p>
-                </div>
-            </div>
-        </section>
-
-        <!-- ==================== VIEW: DASHBOARD PANEL ==================== -->
-        <section id="view-dashboard" class="view-section hidden space-y-6">
-            
-            <!-- Dashboard Header Profile -->
-            <div class="bg-gradient-to-r from-slate-800 to-slate-900 rounded-2xl p-6 flex flex-col md:flex-row md:items-center md:justify-between gap-4 shadow-lg text-white">
-                <div class="flex items-center space-x-4">
-                    <div class="w-14 h-14 bg-white/10 border border-white/20 rounded-full flex items-center justify-center">
-                        <i class="fa-solid fa-user-tie text-2xl text-blue-200"></i>
-                    </div>
-                    <div>
-                        <div class="flex items-center gap-2 mb-1">
-                            <h2 class="text-xl font-bold" id="dash-user-name">Nama Pengguna</h2>
-                            <span id="dash-user-role" class="bg-blue-600 text-white text-[10px] font-bold px-2.5 py-0.5 rounded-full uppercase tracking-wider border border-blue-500 shadow-sm">ROLE</span>
+                        <div class="mb-4">
+                            <label class="form-label text-muted small">Password</label>
+                            <input type="password" id="loginPassword" class="form-control" value="admin123" required>
                         </div>
-                        <p class="text-sm text-slate-300 flex items-center gap-1"><i class="fa-regular fa-envelope"></i> <span id="dash-user-email">email@domain.com</span></p>
-                    </div>
-                </div>
-                <div class="flex flex-wrap gap-2">
-                    <button onclick="openPostEditor()" class="bg-blue-600 hover:bg-blue-500 text-white text-sm font-bold px-4 py-2.5 rounded-lg transition shadow border border-blue-500 flex items-center gap-2">
-                        <i class="fa-solid fa-pen-nib"></i> Tulis Artikel
-                    </button>
-                    <button onclick="handleLogout()" class="bg-slate-700 hover:bg-slate-600 text-white text-sm font-bold px-4 py-2.5 rounded-lg transition border border-slate-600 flex items-center gap-2">
-                        <i class="fa-solid fa-power-off"></i> Keluar
-                    </button>
+                        <button type="submit" class="btn btn-primary w-100 py-2 fw-bold">Login Sekarang</button>
+                    </form>
                 </div>
             </div>
+        </div>
+    </div>
 
-            <!-- Stats grid -->
-            <div class="grid grid-cols-2 md:grid-cols-4 gap-4" id="stats-container">
-                <!-- Diisi dari JS -->
-            </div>
-
-            <!-- Dashboard Content Layout with Tabs -->
-            <div class="bg-white rounded-xl border border-slate-200 overflow-hidden shadow-sm">
-                <!-- Nav Tabs -->
-                <div class="bg-slate-50 border-b border-slate-200 flex overflow-x-auto hide-scrollbar">
-                    <button onclick="switchDashTab('posts')" class="dash-tab px-6 py-3.5 border-b-2 text-sm font-bold whitespace-nowrap active-dash-tab transition-colors" id="dash-tab-posts">
-                        <i class="fa-solid fa-file-lines mr-2 text-slate-400"></i>Kelola Artikel
-                    </button>
-                    <button onclick="switchDashTab('categories')" class="dash-tab px-6 py-3.5 border-b-2 border-transparent text-sm font-bold whitespace-nowrap text-slate-500 hover:text-slate-800 hover:bg-slate-100 transition-colors hidden-for-editor" id="dash-tab-categories">
-                        <i class="fa-solid fa-tags mr-2 text-slate-400"></i>Kategori
-                    </button>
-                    <button onclick="switchDashTab('users')" class="dash-tab px-6 py-3.5 border-b-2 border-transparent text-sm font-bold whitespace-nowrap text-slate-500 hover:text-slate-800 hover:bg-slate-100 transition-colors hidden-for-editor" id="dash-tab-users">
-                        <i class="fa-solid fa-users mr-2 text-slate-400"></i>Akun Editor
-                    </button>
-                    <button onclick="switchDashTab('settings')" class="dash-tab px-6 py-3.5 border-b-2 border-transparent text-sm font-bold whitespace-nowrap text-slate-500 hover:text-slate-800 hover:bg-slate-100 transition-colors hidden-for-editor" id="dash-tab-settings">
-                        <i class="fa-solid fa-screwdriver-wrench mr-2 text-slate-400"></i>Pengaturan Website
-                    </button>
+    <!-- Modal Form Artikel -->
+    <div class="modal fade" id="modalArtikel" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content border-0 shadow">
+                <div class="modal-header bg-primary text-white border-0">
+                    <h5 class="modal-title" id="modalArtikelTitle">Tambah Artikel</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
                 </div>
-
-                <!-- Tab Panels -->
-                <div class="p-6">
-                    
-                    <!-- TAB 1: Posts Management -->
-                    <div id="dash-panel-posts" class="dash-panel space-y-4">
-                        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 bg-blue-50 p-4 rounded-lg border border-blue-100 mb-6">
-                            <div>
-                                <h3 class="font-extrabold text-blue-900 text-lg">Daftar Artikel & Berita</h3>
-                                <p class="text-xs text-blue-700 mt-0.5" id="posts-desc-role">Menampilkan semua artikel.</p>
+                <div class="modal-body">
+                    <form id="formArtikel" onsubmit="app.saveArtikel(event)">
+                        <input type="hidden" id="artId">
+                        <div class="row">
+                            <div class="col-md-5 mb-3">
+                                <label class="form-label">Judul Artikel</label>
+                                <input type="text" id="artTitle" class="form-control" required>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label class="form-label">Kategori</label>
+                                <select id="artCategory" class="form-select" required>
+                                    <option value="Tentang Kami">Tentang Kami</option>
+                                    <option value="Berita">Berita</option>
+                                    <option value="Layanan">Layanan</option>
+                                    <option value="Informasi">Informasi</option>
+                                </select>
+                            </div>
+                            <div class="col-md-3 mb-3">
+                                <label class="form-label">Status</label>
+                                <select id="artStatus" class="form-select" required>
+                                    <option value="Publish">Publish</option>
+                                    <option value="Draft">Draft</option>
+                                </select>
                             </div>
                         </div>
+                        <div class="mb-3">
+                            <label class="form-label">URL Gambar Sampul (Opsional)</label>
+                            <input type="url" id="artImage" class="form-control" placeholder="https://...">
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Isi Konten</label>
+                            <textarea id="artContent" class="form-control" rows="6" required></textarea>
+                        </div>
+                        <div class="text-end">
+                            <button type="button" class="btn btn-light" data-bs-dismiss="modal">Batal</button>
+                            <button type="submit" class="btn btn-primary px-4">Simpan Artikel</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
 
-                        <div class="overflow-x-auto border border-slate-200 rounded-xl shadow-sm">
-                            <table class="w-full text-sm text-left text-slate-600">
-                                <thead class="text-xs uppercase bg-slate-100 text-slate-700 border-b border-slate-200 font-bold">
-                                    <tr>
-                                        <th class="px-5 py-4 w-20">Cover</th>
-                                        <th class="px-5 py-4">Judul Artikel</th>
-                                        <th class="px-5 py-4">Kategori</th>
-                                        <th class="px-5 py-4">Penulis</th>
-                                        <th class="px-5 py-4 text-center">Status</th>
-                                        <th class="px-5 py-4 text-right">Aksi</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="dash-posts-table-body" class="divide-y divide-slate-100">
-                                    <!-- Dinamis dari JS -->
-                                </tbody>
+    <!-- Modal Form Banner -->
+    <div class="modal fade" id="modalBanner" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content border-0 shadow">
+                <div class="modal-header bg-secondary text-white border-0">
+                    <h5 class="modal-title" id="modalBannerTitle">Tambah Banner</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="formBanner" onsubmit="app.saveBanner(event)">
+                        <input type="hidden" id="banId">
+                        <div class="mb-3">
+                            <label class="form-label">Judul/Teks Banner</label>
+                            <input type="text" id="banTitle" class="form-control" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">URL Gambar Banner</label>
+                            <input type="url" id="banImage" class="form-control" placeholder="https://..." required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Link Tujuan (Opsional)</label>
+                            <input type="text" id="banLink" class="form-control" placeholder="/layanan">
+                        </div>
+                        <div class="text-end">
+                            <button type="button" class="btn btn-light" data-bs-dismiss="modal">Batal</button>
+                            <button type="submit" class="btn btn-primary px-4">Simpan Banner</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Form User -->
+    <div class="modal fade" id="modalUser" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content border-0 shadow">
+                <div class="modal-header bg-dark text-white border-0">
+                    <h5 class="modal-title" id="modalUserTitle">Tambah User Baru</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="formUser" onsubmit="app.saveUser(event)">
+                        <input type="hidden" id="userId">
+                        <div class="mb-3">
+                            <label class="form-label">Nama Lengkap</label>
+                            <input type="text" id="userName" class="form-control" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Username / Email</label>
+                            <input type="text" id="userEmail" class="form-control" required>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Role Akses</label>
+                                <select id="userRole" class="form-select" required>
+                                    <option value="Admin">Admin</option>
+                                    <option value="Editor">Editor</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Status Akun</label>
+                                <select id="userStatus" class="form-select" required>
+                                    <option value="Aktif">Aktif</option>
+                                    <option value="Nonaktif">Nonaktif</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="text-end">
+                            <button type="button" class="btn btn-light" data-bs-dismiss="modal">Batal</button>
+                            <button type="submit" class="btn btn-primary px-4">Simpan User</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap Bundle JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        const app = {
+            // State / Dummy Data (Siap diganti dengan call API Google Apps Script)
+            categories: ['Beranda', 'Tentang Kami', 'Berita', 'Layanan', 'Informasi', 'Pengaduan'],
+            
+            banners: [
+                { id: 1, title: 'Selamat Datang di Portal Resmi DISDUKCAPIL Kab. Tolitoli', image: 'https://images.unsplash.com/photo-1541888086425-d81bb19240f5?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80', link: '#' },
+                { id: 2, title: 'Urus Adminduk Kini Lebih Mudah dan Cepat Secara Online', image: 'https://images.unsplash.com/photo-1450101499163-c8848c66ca85?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80', link: '#' }
+            ],
+
+            users: [
+                { id: 1, nama: 'Admin Sistem', email: 'admin', role: 'Admin', status: 'Aktif' },
+                { id: 2, nama: 'Editor Berita', email: 'editor', role: 'Editor', status: 'Aktif' }
+            ],
+
+            articles: [
+                { id: 101, title: 'Profil Kepala Dinas', category: 'Tentang Kami', content: 'Profil singkat Kepala Dinas Kependudukan dan Pencatatan Sipil Kabupaten Tolitoli...', image: 'https://placehold.co/600x400/eeeeee/333333?text=Profil+Kadis', date: '2026-06-20', status: 'Publish' },
+                { id: 102, title: 'Perekaman KTP-el Jemput Bola di Desa Pelosok', category: 'Berita', content: 'Tim Disdukcapil kembali melakukan layanan jemput bola untuk perekaman KTP Elektronik bagi lansia dan disabilitas...', image: 'https://images.unsplash.com/photo-1573164713988-8665fc963095?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80', date: '2026-06-18', status: 'Publish' },
+                { id: 103, title: 'Persyaratan Pembuatan Akta Kelahiran Baru', category: 'Layanan', content: 'Berikut adalah syarat-syarat yang harus disiapkan untuk mengurus Akta Kelahiran...', image: 'https://images.unsplash.com/photo-1555252333-9f8e92e65df9?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80', date: '2026-06-15', status: 'Publish' },
+                { id: 104, title: 'Jadwal Pelayanan Selama Hari Libur Nasional', category: 'Informasi', content: 'Pemberitahuan terkait penyesuaian jadwal layanan administrasi kependudukan...', image: 'https://images.unsplash.com/photo-1606326608606-aa0b62935f2b?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80', date: '2026-06-10', status: 'Draft' },
+            ],
+
+            pengaduan: [
+                { id: 1, nama: 'Budi Santoso', nik: '7201012345678901', kategori: 'Pelayanan KTP', isi: 'Pencetakan KTP saya sudah 1 bulan belum selesai, mohon kejelasannya.', status: 'Baru', tanggal: '2026-06-19' },
+                { id: 2, nama: 'Siti Aminah', nik: '7201029876543210', kategori: 'Aduan Pungli', isi: 'Ada indikasi calo di area parkir yang menawarkan jalur cepat.', status: 'Diproses', tanggal: '2026-06-18' }
+            ],
+
+            survey: {
+                link: 'https://forms.gle/ContohLinkSurveyTolitoli',
+                qrUrl: 'https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=https://forms.gle/ContohLinkSurveyTolitoli'
+            },
+
+            // Instances Modal
+            modals: {},
+
+            init: () => {
+                // Inisialisasi Modals Bootstrap
+                app.modals.login = new bootstrap.Modal(document.getElementById('loginModal'));
+                app.modals.artikel = new bootstrap.Modal(document.getElementById('modalArtikel'));
+                app.modals.banner = new bootstrap.Modal(document.getElementById('modalBanner'));
+                app.modals.user = new bootstrap.Modal(document.getElementById('modalUser'));
+
+                app.renderPublicNavbar();
+                app.navigate('home');
+            },
+
+            // --- STREAMING_CHUNK: Public View Rendering Logic ---
+
+            renderPublicNavbar: () => {
+                const navUl = document.getElementById('public-nav-links');
+                navUl.innerHTML = app.categories.map(cat => {
+                    const action = cat === 'Beranda' ? "app.navigate('home')" : `app.navigate('kategori', '${cat}')`;
+                    return `
+                    <li class="nav-item">
+                        <a class="nav-link nav-link-custom" href="#" onclick="${action}">${cat}</a>
+                    </li>`;
+                }).join('');
+            },
+
+            navigate: (view, param = null) => {
+                document.getElementById('public-view').classList.remove('hidden');
+                document.getElementById('admin-view').classList.add('hidden');
+                
+                const container = document.getElementById('public-content');
+                
+                if (view === 'home') {
+                    app.renderHome(container);
+                } else if (view === 'kategori') {
+                    app.renderCategory(container, param);
+                }
+            },
+
+            renderHome: (container) => {
+                // 1. Carousel
+                let carouselHTML = '';
+                if (app.banners.length > 0) {
+                    let indicators = '';
+                    let inner = '';
+                    app.banners.forEach((b, i) => {
+                        indicators += `<button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="${i}" class="${i === 0 ? 'active' : ''}"></button>`;
+                        inner += `
+                            <div class="carousel-item ${i === 0 ? 'active' : ''}">
+                                <img src="${b.image}" class="d-block w-100" alt="${b.title}">
+                                <div class="carousel-caption-custom">
+                                    <h2 class="fw-bold mb-2">${b.title}</h2>
+                                    ${b.link !== '#' ? `<a href="${b.link}" class="btn btn-primary mt-2">Selengkapnya</a>` : ''}
+                                </div>
+                            </div>
+                        `;
+                    });
+
+                    carouselHTML = `
+                        <div id="heroCarousel" class="carousel slide hero-carousel mb-5" data-bs-ride="carousel">
+                            <div class="carousel-indicators">${indicators}</div>
+                            <div class="carousel-inner">${inner}</div>
+                            <button class="carousel-control-prev" type="button" data-bs-target="#heroCarousel" data-bs-slide="prev">
+                                <span class="carousel-control-prev-icon"></span>
+                            </button>
+                            <button class="carousel-control-next" type="button" data-bs-target="#heroCarousel" data-bs-slide="next">
+                                <span class="carousel-control-next-icon"></span>
+                            </button>
+                        </div>
+                    `;
+                }
+
+                // 2. Berita Terbaru Section
+                const berita = app.articles.filter(a => a.category === 'Berita' && a.status === 'Publish').slice(0, 3);
+                let beritaHTML = '<div class="row mb-5"><div class="col-12"><h3 class="fw-bold mb-4 border-bottom pb-2 border-primary border-2 d-inline-block">Berita Terbaru</h3></div>';
+                
+                berita.forEach(b => {
+                    beritaHTML += `
+                        <div class="col-md-4 mb-4">
+                            <div class="card card-modern">
+                                <div class="position-relative">
+                                    <img src="${b.image}" class="card-img-top" alt="${b.title}">
+                                    <span class="badge-category">${b.category}</span>
+                                </div>
+                                <div class="card-body d-flex flex-column">
+                                    <div class="text-muted small mb-2"><i class="far fa-calendar-alt me-1"></i> ${b.date}</div>
+                                    <h5 class="card-title fw-bold">${b.title}</h5>
+                                    <p class="card-text text-muted" style="display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden;">${b.content}</p>
+                                    <a href="#" class="mt-auto text-primary fw-bold text-decoration-none">Baca Selengkapnya <i class="fas fa-arrow-right ms-1"></i></a>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                });
+                beritaHTML += '</div>';
+
+                // 3. Layanan Pengaduan & Survey Section (Tambahan Baru)
+                let layananLainnyaHTML = `
+                    <div class="row mb-5">
+                        <div class="col-12"><h3 class="fw-bold mb-4 border-bottom pb-2 border-primary border-2 d-inline-block">Layanan & Pengaduan</h3></div>
+                        <div class="col-md-6 mb-4">
+                            <div class="card card-modern p-4 text-center bg-primary text-white h-100 d-flex justify-content-center">
+                                <div>
+                                    <i class="fas fa-bullhorn fa-4x mb-3 text-warning"></i>
+                                    <h4 class="fw-bold">Pengaduan Masyarakat</h4>
+                                    <p class="mb-4">Sampaikan keluhan, kritik, atau saran Anda mengenai pelayanan administrasi kependudukan di DISDUKCAPIL Kab. Tolitoli.</p>
+                                    <button class="btn btn-light fw-bold px-4 rounded-pill" onclick="app.navigate('kategori', 'Pengaduan')">Buat Pengaduan <i class="fas fa-arrow-right ms-2"></i></button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-4">
+                            <div class="card card-modern p-4 text-center h-100 d-flex flex-column justify-content-center align-items-center" style="border: 2px dashed var(--primary-color);">
+                                <h4 class="fw-bold text-primary mb-2">Survey Kepuasan Masyarakat</h4>
+                                <p class="text-muted small mb-3">Bantu kami meningkatkan kualitas layanan dengan mengisi survey singkat.</p>
+                                <img src="${app.survey.qrUrl}" alt="QR Code Survey" class="img-fluid border p-2 rounded bg-white shadow-sm mb-3" style="max-width: 160px;">
+                                <div class="text-muted small mb-2">Scan QR Code di atas menggunakan kamera HP Anda</div>
+                                <a href="${app.survey.link}" target="_blank" class="btn btn-outline-primary rounded-pill mt-auto">Atau Klik Link Survey Ini</a>
+                            </div>
+                        </div>
+                    </div>
+                `;
+
+                container.innerHTML = carouselHTML + beritaHTML + layananLainnyaHTML;
+            },
+
+            renderCategory: (container, category) => {
+                let items = app.articles.filter(a => a.category === category && a.status === 'Publish');
+                let html = `<h2 class="fw-bold mb-4">${category}</h2><div class="row">`;
+                
+                if (category === 'Pengaduan') {
+                    html += `
+                        <div class="col-md-8 mx-auto">
+                            <div class="card card-modern p-4">
+                                <h5 class="fw-bold text-primary border-bottom pb-2 mb-4"><i class="fas fa-comment-dots me-2"></i> Formulir Pengaduan Masyarakat</h5>
+                                <form onsubmit="app.submitPengaduan(event)">
+                                    <div class="mb-3"><label class="form-label fw-semibold">Nama Lengkap</label><input type="text" id="pengNama" class="form-control bg-light" required></div>
+                                    <div class="mb-3"><label class="form-label fw-semibold">NIK</label><input type="text" id="pengNIK" class="form-control bg-light" pattern="[0-9]{16}" title="NIK harus 16 digit angka" required></div>
+                                    <div class="mb-3">
+                                        <label class="form-label fw-semibold">Kategori Pengaduan</label>
+                                        <select id="pengKategori" class="form-select bg-light" required>
+                                            <option value="">-- Pilih Kategori --</option>
+                                            <option value="Pelayanan KTP">Pelayanan KTP-el</option>
+                                            <option value="Pelayanan KK">Pelayanan Kartu Keluarga</option>
+                                            <option value="Pelayanan Akta">Pelayanan Akta (Lahir/Mati/Nikah)</option>
+                                            <option value="Aduan Pungli">Aduan Pungli / Calo</option>
+                                            <option value="Lainnya">Lainnya</option>
+                                        </select>
+                                    </div>
+                                    <div class="mb-4"><label class="form-label fw-semibold">Isi Pengaduan</label><textarea id="pengIsi" class="form-control bg-light" rows="5" required placeholder="Ceritakan detail aduan Anda..."></textarea></div>
+                                    <button class="btn btn-primary w-100 fw-bold py-2 shadow-sm"><i class="fas fa-paper-plane me-2"></i> Kirim Pengaduan Sekarang</button>
+                                </form>
+                            </div>
+                        </div>
+                    `;
+                } else if (items.length === 0) {
+                    html += `<div class="col-12"><div class="alert alert-info">Belum ada data untuk kategori ini.</div></div>`;
+                } else {
+                    items.forEach(item => {
+                        html += `
+                            <div class="col-md-4 mb-4">
+                                <div class="card card-modern">
+                                    <img src="${item.image}" class="card-img-top" alt="${item.title}">
+                                    <div class="card-body">
+                                        <div class="text-muted small mb-2"><i class="far fa-calendar-alt me-1"></i> ${item.date}</div>
+                                        <h5 class="card-title fw-bold">${item.title}</h5>
+                                        <p class="card-text text-muted text-truncate">${item.content}</p>
+                                        <button class="btn btn-outline-primary btn-sm mt-2">Detail</button>
+                                    </div>
+                                </div>
+                            </div>
+                        `;
+                    });
+                }
+                html += `</div>`;
+                container.innerHTML = html;
+            },
+
+            // --- STREAMING_CHUNK: Admin View Rendering Logic (Articles & Banners) ---
+
+            showLoginModal: () => { app.modals.login.show(); },
+
+            handleLogin: (e) => {
+                e.preventDefault();
+                app.modals.login.hide();
+                Swal.fire({
+                    title: 'Berhasil Login',
+                    icon: 'success',
+                    timer: 1500,
+                    showConfirmButton: false
+                }).then(() => {
+                    document.getElementById('public-view').classList.add('hidden');
+                    document.getElementById('admin-view').classList.remove('hidden');
+                    app.adminNavigate('dashboard');
+                });
+            },
+
+            logout: () => {
+                Swal.fire({
+                    title: 'Keluar?', text: 'Sesi anda akan diakhiri.', icon: 'warning',
+                    showCancelButton: true, confirmButtonText: 'Ya, Keluar'
+                }).then((result) => {
+                    if(result.isConfirmed) app.navigate('home');
+                });
+            },
+
+            adminNavigate: (page) => {
+                document.querySelectorAll('.admin-nav-link').forEach(el => el.classList.remove('active'));
+                document.querySelector(`.admin-nav-link[data-target="${page}"]`).classList.add('active');
+                
+                const container = document.getElementById('admin-content-dynamic');
+                const title = document.getElementById('admin-page-title');
+
+                if (page === 'dashboard') {
+                    title.innerText = 'Dashboard Overview';
+                    container.innerHTML = `
+                        <div class="row g-4">
+                            <div class="col-md-3">
+                                <div class="card bg-primary text-white border-0 shadow-sm p-3">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div><h6 class="mb-1">Total Artikel</h6><h2 class="mb-0 fw-bold">${app.articles.length}</h2></div>
+                                        <i class="fas fa-newspaper fs-1 opacity-50"></i>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="card bg-success text-white border-0 shadow-sm p-3">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div><h6 class="mb-1">Total Banner</h6><h2 class="mb-0 fw-bold">${app.banners.length}</h2></div>
+                                        <i class="fas fa-images fs-1 opacity-50"></i>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="card bg-warning text-dark border-0 shadow-sm p-3">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div><h6 class="mb-1">Pengaduan Masuk</h6><h2 class="mb-0 fw-bold">${app.pengaduan.length}</h2></div>
+                                        <i class="fas fa-comments fs-1 opacity-50"></i>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="card bg-info text-white border-0 shadow-sm p-3">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div><h6 class="mb-1">Total User</h6><h2 class="mb-0 fw-bold">${app.users.length}</h2></div>
+                                        <i class="fas fa-users fs-1 opacity-50"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                } else if (page === 'banner') {
+                    title.innerText = 'Manajemen Banner Carousel';
+                    app.renderAdminBanner(container);
+                } else if (page === 'artikel') {
+                    title.innerText = 'Manajemen Artikel & Halaman';
+                    app.renderAdminArtikel(container);
+                } else if (page === 'pengaduan') {
+                    title.innerText = 'Tindak Lanjut Pengaduan Masyarakat';
+                    app.renderAdminPengaduan(container);
+                } else if (page === 'survey') {
+                    title.innerText = 'Pengaturan Survey Kepuasan';
+                    app.renderAdminSurvey(container);
+                } else if (page === 'user') {
+                    title.innerText = 'Manajemen User / Pengguna';
+                    app.renderAdminUser(container);
+                } else {
+                    title.innerText = page.charAt(0).toUpperCase() + page.slice(1);
+                    container.innerHTML = `<div class="alert alert-warning">Modul ${page} sedang dalam pengembangan.</div>`;
+                }
+            },
+
+            renderAdminBanner: (container) => {
+                let rows = app.banners.map((b, i) => `
+                    <tr>
+                        <td>${i + 1}</td>
+                        <td><img src="${b.image}" height="50" class="rounded shadow-sm"></td>
+                        <td class="fw-semibold">${b.title}</td>
+                        <td>${b.link}</td>
+                        <td>
+                            <button class="btn btn-sm btn-info text-white me-1" onclick="app.editBanner(${b.id})"><i class="fas fa-edit"></i> Edit</button>
+                            <button class="btn btn-sm btn-danger" onclick="app.deleteBanner(${b.id})"><i class="fas fa-trash"></i> Hapus</button>
+                        </td>
+                    </tr>
+                `).join('');
+
+                container.innerHTML = `
+                    <div class="card border-0 shadow-sm">
+                        <div class="card-header bg-white p-3 d-flex justify-content-between align-items-center">
+                            <h6 class="mb-0 fw-bold">Daftar Banner</h6>
+                            <button class="btn btn-primary btn-sm" onclick="app.openModalBanner()"><i class="fas fa-plus me-1"></i> Tambah Banner</button>
+                        </div>
+                        <div class="card-body p-0">
+                            <table class="table table-hover mb-0 align-middle">
+                                <thead class="table-light"><tr><th>No</th><th>Gambar</th><th>Judul</th><th>Link</th><th>Aksi</th></tr></thead>
+                                <tbody>${rows}</tbody>
                             </table>
                         </div>
                     </div>
-
-                    <!-- TAB 2: Categories Management (Admin) -->
-                    <div id="dash-panel-categories" class="dash-panel hidden space-y-6">
-                        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                            <!-- Form -->
-                            <div class="space-y-4 bg-slate-50 border border-slate-200 rounded-xl p-6 h-fit">
-                                <h4 class="font-extrabold text-slate-800 text-lg border-b pb-2" id="category-form-title">Tambah Kategori</h4>
-                                <form id="category-form" onsubmit="handleCategorySubmit(event)" class="space-y-4 pt-2">
-                                    <input type="hidden" id="category-edit-id">
-                                    <div class="space-y-1.5">
-                                        <label class="text-xs font-bold text-slate-600 uppercase">Nama Kategori</label>
-                                        <input type="text" id="category-name" required placeholder="Contoh: Berita Desa" class="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition">
-                                    </div>
-                                    <button type="submit" class="w-full bg-blue-700 hover:bg-blue-800 text-white font-bold py-2.5 rounded-lg text-sm transition shadow">
-                                        Simpan Kategori
-                                    </button>
-                                </form>
-                            </div>
-
-                            <!-- Table -->
-                            <div class="lg:col-span-2 space-y-4">
-                                <div class="overflow-x-auto border border-slate-200 rounded-xl shadow-sm">
-                                    <table class="w-full text-sm text-left text-slate-600">
-                                        <thead class="text-xs uppercase bg-slate-100 text-slate-700 border-b border-slate-200 font-bold">
-                                            <tr>
-                                                <th class="px-5 py-4">Nama Kategori</th>
-                                                <th class="px-5 py-4">Slug URL</th>
-                                                <th class="px-5 py-4 text-right">Aksi</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody id="dash-categories-table-body" class="divide-y divide-slate-100">
-                                            <!-- Dinamis dari JS -->
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- TAB 3: Users Management (Admin) -->
-                    <div id="dash-panel-users" class="dash-panel hidden space-y-6">
-                        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                            <!-- Form -->
-                            <div class="space-y-4 bg-slate-50 border border-slate-200 rounded-xl p-6 h-fit">
-                                <h4 class="font-extrabold text-slate-800 text-lg border-b pb-2" id="user-form-title">Tambah Akun Baru</h4>
-                                <form id="user-form" onsubmit="handleUserSubmit(event)" class="space-y-4 pt-2">
-                                    <input type="hidden" id="user-edit-id">
-                                    <div class="space-y-1.5">
-                                        <label class="text-xs font-bold text-slate-600 uppercase">Nama Lengkap</label>
-                                        <input type="text" id="user-fullname" required placeholder="Budi Santoso" class="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-blue-500 outline-none transition">
-                                    </div>
-                                    <div class="space-y-1.5">
-                                        <label class="text-xs font-bold text-slate-600 uppercase">Alamat Email</label>
-                                        <input type="email" id="user-email" required placeholder="budi@domain.com" class="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-blue-500 outline-none transition">
-                                    </div>
-                                    <div class="space-y-1.5">
-                                        <label class="text-xs font-bold text-slate-600 uppercase">Kata Sandi</label>
-                                        <input type="password" id="user-password" required placeholder="Min. 6 karakter" class="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-blue-500 outline-none transition">
-                                    </div>
-                                    <div class="space-y-1.5">
-                                        <label class="text-xs font-bold text-slate-600 uppercase">Hak Akses (Role)</label>
-                                        <select id="user-role" class="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-blue-500 outline-none bg-white transition cursor-pointer">
-                                            <option value="editor">Editor (Hanya bisa Draft Artikel)</option>
-                                            <option value="admin">Admin (Akses Penuh & Publish)</option>
-                                        </select>
-                                    </div>
-                                    <button type="submit" class="w-full bg-blue-700 hover:bg-blue-800 text-white font-bold py-2.5 rounded-lg text-sm transition shadow mt-2">
-                                        Simpan Akun
-                                    </button>
-                                </form>
-                            </div>
-
-                            <!-- Table -->
-                            <div class="lg:col-span-2 space-y-4">
-                                <div class="overflow-x-auto border border-slate-200 rounded-xl shadow-sm">
-                                    <table class="w-full text-sm text-left text-slate-600">
-                                        <thead class="text-xs uppercase bg-slate-100 text-slate-700 border-b border-slate-200 font-bold">
-                                            <tr>
-                                                <th class="px-5 py-4">Nama Pengguna</th>
-                                                <th class="px-5 py-4">Email</th>
-                                                <th class="px-5 py-4">Role</th>
-                                                <th class="px-5 py-4 text-right">Aksi</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody id="dash-users-table-body" class="divide-y divide-slate-100">
-                                            <!-- Dinamis dari JS -->
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- TAB 4: Settings (Admin) -->
-                    <div id="dash-panel-settings" class="dash-panel hidden space-y-6">
-                        <div class="bg-blue-50 border border-blue-100 p-4 rounded-lg mb-6">
-                            <h3 class="font-extrabold text-blue-900 text-lg">Konfigurasi Tampilan Website</h3>
-                            <p class="text-xs text-blue-700 mt-1">Ubah identitas visual dan informasi kontak portal publik di sini.</p>
-                        </div>
-                        
-                        <form id="settings-form" onsubmit="handleSettingsSubmit(event)" class="max-w-3xl space-y-6">
-                            <!-- Visual Settings -->
-                            <div class="space-y-4 border border-slate-200 rounded-xl p-5 bg-slate-50">
-                                <h4 class="font-bold text-slate-800 border-b border-slate-200 pb-2"><i class="fa-solid fa-palette mr-2 text-slate-400"></i>Identitas Visual</h4>
-                                
-                                <div class="space-y-1.5">
-                                    <label class="text-xs font-bold text-slate-600 uppercase">Nama Website (Tampil di Header)</label>
-                                    <input type="text" id="setting-site_title" class="w-full border border-slate-300 rounded-lg px-4 py-2.5 text-sm focus:ring-2 focus:ring-blue-500 outline-none transition bg-white" placeholder="Contoh: DISDUKCAPIL Kab. Tolitoli">
-                                </div>
-                                
-                                <div class="space-y-1.5">
-                                    <label class="text-xs font-bold text-slate-600 uppercase flex items-center gap-2">
-                                        URL Logo Website 
-                                        <span class="bg-slate-200 text-slate-500 text-[9px] px-1.5 py-0.5 rounded font-normal">Opsional</span>
-                                    </label>
-                                    <input type="url" id="setting-logo_url" class="w-full border border-slate-300 rounded-lg px-4 py-2.5 text-sm focus:ring-2 focus:ring-blue-500 outline-none transition bg-white" placeholder="https://link-gambar-logo.png">
-                                    <p class="text-[11px] text-slate-500">Kosongkan untuk menggunakan logo ikon bawaan (gedung). Pastikan URL gambar valid berformat PNG/JPG.</p>
-                                </div>
-
-                                <div class="space-y-1.5">
-                                    <label class="text-xs font-bold text-slate-600 uppercase flex flex-col">
-                                        <span>Gambar Banner / Carousel Slider Halaman Utama</span>
-                                        <span class="text-[10px] text-slate-500 font-normal lowercase normal-case mt-0.5">Masukkan URL gambar, pisahkan dengan baris baru (tombol Enter). Resolusi ideal 1200x600px.</span>
-                                    </label>
-                                    <textarea id="setting-carousel_urls" rows="4" class="w-full border border-slate-300 rounded-lg px-4 py-2.5 text-sm focus:ring-2 focus:ring-blue-500 outline-none transition bg-white font-mono text-xs whitespace-nowrap overflow-x-auto" placeholder="https://gambar1.jpg&#10;https://gambar2.jpg"></textarea>
-                                </div>
-                            </div>
-
-                            <!-- Contact Settings -->
-                            <div class="space-y-4 border border-slate-200 rounded-xl p-5 bg-slate-50">
-                                <h4 class="font-bold text-slate-800 border-b border-slate-200 pb-2"><i class="fa-solid fa-address-book mr-2 text-slate-400"></i>Informasi Kontak & Footer</h4>
-                                
-                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                    <div class="space-y-1.5">
-                                        <label class="text-xs font-bold text-slate-600 uppercase">Email Resmi</label>
-                                        <input type="email" id="setting-contact_email" class="w-full border border-slate-300 rounded-lg px-4 py-2.5 text-sm focus:ring-2 focus:ring-blue-500 outline-none transition bg-white">
-                                    </div>
-                                    <div class="space-y-1.5">
-                                        <label class="text-xs font-bold text-slate-600 uppercase">Nomor HP / WhatsApp / Telp</label>
-                                        <input type="text" id="setting-phone" class="w-full border border-slate-300 rounded-lg px-4 py-2.5 text-sm focus:ring-2 focus:ring-blue-500 outline-none transition bg-white">
-                                    </div>
-                                </div>
-                                <div class="space-y-1.5">
-                                    <label class="text-xs font-bold text-slate-600 uppercase">Alamat Kantor Lengkap</label>
-                                    <textarea id="setting-office_address" rows="2" class="w-full border border-slate-300 rounded-lg px-4 py-2.5 text-sm focus:ring-2 focus:ring-blue-500 outline-none transition bg-white"></textarea>
-                                </div>
-                                <div class="space-y-1.5">
-                                    <label class="text-xs font-bold text-slate-600 uppercase">Teks Copyright Bawah</label>
-                                    <input type="text" id="setting-copyright" class="w-full border border-slate-300 rounded-lg px-4 py-2.5 text-sm focus:ring-2 focus:ring-blue-500 outline-none transition bg-white">
-                                </div>
-                            </div>
-
-                            <button type="submit" class="bg-blue-700 hover:bg-blue-800 text-white font-bold py-3 px-8 rounded-xl text-sm transition shadow-lg flex items-center gap-2">
-                                <i class="fa-solid fa-floppy-disk"></i> Simpan Semua Pengaturan
-                            </button>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- ==================== VIEW: POST WRITER / EDIT FORM ==================== -->
-        <section id="view-post-writer" class="view-section hidden space-y-6 max-w-5xl mx-auto py-4">
-            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 border-b border-slate-200 pb-4">
-                <div>
-                    <h3 class="text-2xl font-extrabold text-slate-800" id="writer-title-label">Tulis Artikel Baru</h3>
-                    <p class="text-sm text-slate-500 mt-1" id="writer-role-info">Mode Editor</p>
-                </div>
-                <button onclick="switchView('dashboard')" class="bg-white border border-slate-300 hover:bg-slate-50 text-slate-700 px-4 py-2 rounded-lg text-sm font-bold transition shadow-sm flex items-center gap-2">
-                    <i class="fa-solid fa-arrow-left"></i> Batal / Kembali
-                </button>
-            </div>
-
-            <form id="post-writer-form" onsubmit="handlePostSubmit(event)" class="bg-white p-6 md:p-8 rounded-2xl border border-slate-200 shadow-sm space-y-6">
-                <input type="hidden" id="writer-post-id">
-                
-                <div class="space-y-2">
-                    <label class="text-xs font-bold uppercase tracking-wider text-slate-600">Judul Artikel / Publikasi <span class="text-rose-500">*</span></label>
-                    <input type="text" id="writer-title" required placeholder="Contoh: Perekaman KTP-el Jemput Bola di Desa..." class="w-full border border-slate-300 rounded-xl px-5 py-3.5 text-lg font-bold text-slate-800 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition">
-                </div>
-
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div class="space-y-2">
-                        <label class="text-xs font-bold uppercase tracking-wider text-slate-600">Kategori <span class="text-rose-500">*</span></label>
-                        <select id="writer-category" required class="w-full border border-slate-300 rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-blue-500 outline-none bg-slate-50 focus:bg-white transition cursor-pointer">
-                            <!-- Diisi oleh JS -->
-                        </select>
-                    </div>
-                    <div class="space-y-2">
-                        <label class="text-xs font-bold uppercase tracking-wider text-slate-600">Status Publikasi <span class="text-rose-500">*</span></label>
-                        <!-- Pilihan select ini akan dimanipulasi berdasarkan ROLE pengguna -->
-                        <select id="writer-status" required class="w-full border border-slate-300 rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-blue-500 outline-none bg-slate-50 focus:bg-white transition cursor-pointer">
-                            <!-- Diisi oleh JS (hanya draft untuk editor, draft/publish untuk admin) -->
-                        </select>
-                        <p class="text-[10px] text-slate-500 mt-1" id="writer-status-helper">Hanya Admin yang dapat mem-publish artikel secara langsung.</p>
-                    </div>
-                </div>
-
-                <!-- Image Upload Section -->
-                <div class="border border-slate-200 rounded-xl p-5 bg-slate-50 space-y-3">
-                    <label class="text-xs font-bold uppercase tracking-wider text-slate-600 block">Gambar Cover / Thumbnail Utama <span class="text-rose-500">*</span></label>
-                    <div class="flex flex-col sm:flex-row items-center gap-6">
-                        <div class="w-full sm:w-48 h-32 bg-white rounded-lg flex items-center justify-center overflow-hidden border border-slate-200 shadow-inner flex-shrink-0 relative group">
-                            <img id="writer-image-preview" src="" alt="Cover Preview" class="w-full h-full object-cover hidden">
-                            <i id="writer-image-placeholder" class="fa-solid fa-image text-slate-300 text-4xl"></i>
-                        </div>
-                        <div class="flex-grow space-y-2 w-full">
-                            <input type="file" id="writer-file" accept="image/*" onchange="previewImageFile(event)" class="block w-full text-sm text-slate-500 file:mr-4 file:py-2.5 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-bold file:bg-blue-100 file:text-blue-700 hover:file:bg-blue-200 cursor-pointer transition">
-                            <p class="text-xs text-slate-500 leading-relaxed">Pilih gambar resolusi tinggi (Disarankan format lanskap/16:9). Gambar akan otomatis terunggah ke database/Drive.</p>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Rich Text Content Editor -->
-                <div class="space-y-2">
-                    <label class="text-xs font-bold uppercase tracking-wider text-slate-600 block">Isi Konten Artikel <span class="text-rose-500">*</span></label>
-                    
-                    <!-- Editor Toolbar -->
-                    <div class="flex bg-slate-100 border border-slate-300 border-b-0 rounded-t-xl p-2 gap-1.5 flex-wrap sticky top-16 z-10">
-                        <button type="button" onclick="formatDoc('bold')" class="editor-btn w-8 h-8 flex justify-center items-center bg-white hover:bg-slate-200 rounded border border-slate-200 text-sm font-bold text-slate-700 transition" title="Tebal">B</button>
-                        <button type="button" onclick="formatDoc('italic')" class="editor-btn w-8 h-8 flex justify-center items-center bg-white hover:bg-slate-200 rounded border border-slate-200 text-sm italic text-slate-700 transition" title="Miring">I</button>
-                        <button type="button" onclick="formatDoc('underline')" class="editor-btn w-8 h-8 flex justify-center items-center bg-white hover:bg-slate-200 rounded border border-slate-200 text-sm underline text-slate-700 transition" title="Garis Bawah">U</button>
-                        <div class="w-px h-6 bg-slate-300 my-auto mx-1"></div>
-                        <button type="button" onclick="formatDoc('insertUnorderedList')" class="editor-btn w-8 h-8 flex justify-center items-center bg-white hover:bg-slate-200 rounded border border-slate-200 text-sm text-slate-700 transition" title="Bullet List"><i class="fa-solid fa-list-ul"></i></button>
-                        <button type="button" onclick="formatDoc('insertOrderedList')" class="editor-btn w-8 h-8 flex justify-center items-center bg-white hover:bg-slate-200 rounded border border-slate-200 text-sm text-slate-700 transition" title="Numbered List"><i class="fa-solid fa-list-ol"></i></button>
-                        <div class="w-px h-6 bg-slate-300 my-auto mx-1"></div>
-                        <button type="button" onclick="formatDoc('justifyLeft')" class="editor-btn w-8 h-8 flex justify-center items-center bg-white hover:bg-slate-200 rounded border border-slate-200 text-sm text-slate-700 transition"><i class="fa-solid fa-align-left"></i></button>
-                        <button type="button" onclick="formatDoc('justifyCenter')" class="editor-btn w-8 h-8 flex justify-center items-center bg-white hover:bg-slate-200 rounded border border-slate-200 text-sm text-slate-700 transition"><i class="fa-solid fa-align-center"></i></button>
-                        <button type="button" onclick="formatDoc('justifyRight')" class="editor-btn w-8 h-8 flex justify-center items-center bg-white hover:bg-slate-200 rounded border border-slate-200 text-sm text-slate-700 transition"><i class="fa-solid fa-align-right"></i></button>
-                    </div>
-                    
-                    <!-- Editable Content Area -->
-                    <div id="writer-content" contenteditable="true" class="w-full min-h-[400px] border border-slate-300 rounded-b-xl p-5 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white text-slate-700 leading-relaxed overflow-y-auto text-base prose max-w-none transition"></div>
-                </div>
-
-                <div class="flex justify-end gap-3 pt-6 border-t border-slate-100">
-                    <button type="button" onclick="switchView('dashboard')" class="bg-slate-100 hover:bg-slate-200 text-slate-700 text-sm font-bold px-6 py-3 rounded-xl transition">Batal</button>
-                    <button type="submit" class="bg-blue-700 hover:bg-blue-800 text-white text-sm font-bold px-8 py-3 rounded-xl shadow-lg transition flex items-center gap-2">
-                        <i class="fa-solid fa-cloud-arrow-up"></i> Simpan Artikel
-                    </button>
-                </div>
-            </form>
-        </section>
-
-        <!-- ==================== SETUP GUIDE & CONFIGURATION ==================== -->
-        <section id="view-setup-guide" class="view-section hidden space-y-6 max-w-4xl mx-auto py-6">
-            <!-- Isi panduan sama, tetapi ditambahkan penjelasan GAS -->
-            <div class="bg-white rounded-2xl border border-slate-200 p-6 md:p-8 space-y-6 shadow-sm">
-                <!-- Header Guide -->
-                <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 border-b border-slate-200 pb-5">
-                    <div class="flex items-center gap-4">
-                        <div class="w-12 h-12 bg-yellow-100 text-yellow-700 rounded-full flex items-center justify-center flex-shrink-0">
-                            <i class="fa-solid fa-database text-xl"></i>
-                        </div>
-                        <div>
-                            <h2 class="text-xl font-extrabold text-slate-800">Koneksi Database Google Sheets</h2>
-                            <p class="text-sm text-slate-500">Ubah web statis ini menjadi dinamis 100% gratis.</p>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- API Connection Form -->
-                <div class="bg-blue-50 border border-blue-200 rounded-xl p-5 sm:p-6 space-y-3">
-                    <h3 class="font-bold text-blue-900 text-sm uppercase tracking-wider flex items-center gap-2">
-                        <i class="fa-solid fa-link"></i> Tautan Web App Apps Script
-                    </h3>
-                    <p class="text-sm text-slate-600">Tempel URL Web App dari Google Apps Script yang telah Anda deploy di bawah ini untuk menghubungkan aplikasi ke Database Google Sheets milik Anda.</p>
-                    <div class="flex flex-col sm:flex-row gap-2 pt-2">
-                        <input type="text" id="api-url-input" placeholder="https://script.google.com/macros/s/.../exec" class="flex-grow border border-slate-300 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition shadow-sm bg-white">
-                        <button onclick="saveApiUrl()" class="bg-blue-700 hover:bg-blue-800 text-white font-bold text-sm px-6 py-2.5 rounded-lg transition shadow">Hubungkan</button>
-                        <button onclick="resetToDemoMode()" class="bg-slate-200 hover:bg-slate-300 text-slate-700 font-bold text-sm px-5 py-2.5 rounded-lg transition">Gunakan Demo</button>
-                    </div>
-                </div>
-
-                <div class="space-y-4 pt-4 border-t border-slate-100">
-                    <h3 class="font-bold text-slate-800 text-base flex items-center gap-2">
-                        <span class="w-6 h-6 bg-slate-800 text-white rounded-full flex items-center justify-center text-xs">1</span> 
-                        Langkah Setup di Google Drive
-                    </h3>
-                    <ol class="list-decimal list-inside space-y-3 text-sm text-slate-600 pl-2">
-                        <li>Buat <strong>Google Spreadsheet</strong> baru di akun Google/Google Workspace instansi Anda.</li>
-                        <li>Pilih menu <strong>Ekstensi</strong> &gt; <strong>Apps Script</strong>.</li>
-                        <li>Hapus semua kode bawaan, salin dan tempel kode di bawah ini:</li>
-                    </ol>
-
-                    <!-- Codeblock Box -->
-                    <div class="space-y-0 rounded-xl overflow-hidden border border-slate-700 shadow-lg">
-                        <div class="flex justify-between items-center bg-slate-800 text-slate-300 p-3 px-4 border-b border-slate-700">
-                            <span class="font-mono text-xs font-bold text-yellow-400">Code.gs</span>
-                            <button onclick="copyGasCode()" class="bg-slate-700 hover:bg-slate-600 text-white px-3 py-1.5 rounded-md transition flex items-center gap-2 text-xs font-semibold">
-                                <i class="fa-regular fa-copy"></i> <span id="copy-text">Salin Kode</span>
-                            </button>
-                        </div>
-                        <pre class="bg-[#0f172a] text-emerald-400 p-5 overflow-x-auto text-[12px] font-mono leading-relaxed h-[300px]" id="gas-code-block">
-/* ================================================================================
-  GOOGLE APPS SCRIPT BACKEND FOR DISDUKCAPIL (UPDATED)
-  - Penambahan kolom logo_url dan carousel_urls di Settings
-  - Support Role Admin & Editor
-================================================================================
-*/
-
-const SPREADSHEET_ID = ""; // Kosongkan jika ingin menggunakan file Spreadsheet ini
-
-function setupDatabase() {
-  const ss = SPREADSHEET_ID ? SpreadsheetApp.openById(SPREADSHEET_ID) : SpreadsheetApp.getActiveSpreadsheet();
-  
-  // Sheet Users
-  let sheetUsers = ss.getSheetByName("Users");
-  if (!sheetUsers) {
-    sheetUsers = ss.insertSheet("Users");
-    sheetUsers.appendRow(["id", "email", "password_hash", "name", "role", "created_at"]);
-    sheetUsers.appendRow(["admin-1", "admin@disdukcapil.com", "admin123", "Kepala TI", "admin", new Date().toISOString()]);
-    sheetUsers.appendRow(["editor-1", "editor@disdukcapil.com", "editor123", "Staf Penulis", "editor", new Date().toISOString()]);
-  }
-  
-  // Sheet Posts
-  let sheetPosts = ss.getSheetByName("Posts");
-  if (!sheetPosts) {
-    sheetPosts = ss.insertSheet("Posts");
-    sheetPosts.appendRow(["id", "title", "slug", "content", "thumbnail_url", "category_id", "author_id", "status", "created_at", "updated_at"]);
-  }
-  
-  // Sheet Categories
-  let sheetCategories = ss.getSheetByName("Categories");
-  if (!sheetCategories) {
-    sheetCategories = ss.insertSheet("Categories");
-    sheetCategories.appendRow(["id", "name", "slug"]);
-    sheetCategories.appendRow(["cat-1", "Pengumuman", "pengumuman"]);
-    sheetCategories.appendRow(["cat-2", "Berita", "berita"]);
-  }
-  
-  // Sheet Settings
-  let sheetSettings = ss.getSheetByName("Settings");
-  if (!sheetSettings) {
-    sheetSettings = ss.insertSheet("Settings");
-    sheetSettings.appendRow(["key", "value"]);
-    sheetSettings.appendRow(["site_title", "DISDUKCAPIL Tolitoli"]);
-    sheetSettings.appendRow(["logo_url", ""]);
-    sheetSettings.appendRow(["carousel_urls", "https://images.unsplash.com/photo-1541872703-74c5e44368f9?q=80&w=1200\nhttps://images.unsplash.com/photo-1509062522246-3755977927d7?q=80&w=1200"]);
-    sheetSettings.appendRow(["contact_email", "info@disdukcapil.tolitolikab.go.id"]);
-    sheetSettings.appendRow(["office_address", "Jl. Jenderal Sudirman No. 12, Kab. Tolitoli"]);
-    sheetSettings.appendRow(["phone", "0811-1234-5678"]);
-    sheetSettings.appendRow(["copyright", "© 2026 DISDUKCAPIL Kab. Tolitoli."]);
-  }
-  Logger.log("DATABASE BERHASIL DIINISIALISASI!");
-}
-
-function doGet(e) {
-  const action = e.parameter.action;
-  const ss = SPREADSHEET_ID ? SpreadsheetApp.openById(SPREADSHEET_ID) : SpreadsheetApp.getActiveSpreadsheet();
-  try {
-    if (action === "getPublicData") {
-      return contentResponse({
-        posts: getSheetData(ss.getSheetByName("Posts")),
-        categories: getSheetData(ss.getSheetByName("Categories")),
-        settings: getSettingsMap(ss.getSheetByName("Settings")),
-        users: getSheetData(ss.getSheetByName("Users")).map(u => ({ id: u.id, name: u.name, role: u.role }))
-      });
-    } else if (action === "getAdminData") {
-      return contentResponse({
-        posts: getSheetData(ss.getSheetByName("Posts")),
-        categories: getSheetData(ss.getSheetByName("Categories")),
-        settings: getSettingsMap(ss.getSheetByName("Settings")),
-        users: getSheetData(ss.getSheetByName("Users")).map(u => ({ id: u.id, email: u.email, name: u.name, role: u.role }))
-      });
-    }
-  } catch (err) {
-    return contentResponse({ status: "error", message: err.toString() });
-  }
-}
-
-function doPost(e) {
-  let postData;
-  try { postData = JSON.parse(e.postData.contents); } catch (err) { return contentResponse({ status: "error" }); }
-  const ss = SPREADSHEET_ID ? SpreadsheetApp.openById(SPREADSHEET_ID) : SpreadsheetApp.getActiveSpreadsheet();
-  const action = postData.action;
-
-  try {
-    if (action === "login") {
-      const users = getSheetData(ss.getSheetByName("Users"));
-      const user = users.find(u => u.email === postData.email && u.password_hash === postData.password);
-      if (user) return contentResponse({ status: "success", user: { id: user.id, name: user.name, email: user.email, role: user.role } });
-      else return contentResponse({ status: "error", message: "Gagal Login!" });
-    }
-
-    if (action === "savePost") {
-      const sheet = ss.getSheetByName("Posts");
-      const post = postData.post;
-      // Validasi keamanan: Jika user bukan admin, status paksa jadi draft
-      if (postData.user_role !== 'admin') {
-         post.status = 'draft';
-      }
-      
-      let finalImageUrl = post.thumbnail_url;
-      if (post.image_base64 && post.image_filename) finalImageUrl = uploadImageToDrive(post.image_base64, post.image_filename);
-
-      const existingIndex = getSheetData(sheet).findIndex(p => p.id === post.id);
-      const ts = new Date().toISOString();
-
-      if (existingIndex !== -1) {
-        const row = existingIndex + 2;
-        sheet.getRange(row, 2, 1, 7).setValues([[post.title, post.slug, post.content, finalImageUrl, post.category_id, post.author_id, post.status]]);
-        sheet.getRange(row, 10).setValue(ts);
-      } else {
-        sheet.appendRow([post.id, post.title, post.slug, post.content, finalImageUrl || "", post.category_id, post.author_id, post.status, ts, ts]);
-      }
-      return contentResponse({ status: "success" });
-    }
-
-    if (action === "deletePost") {
-      const sheet = ss.getSheetByName("Posts");
-      const idx = getSheetData(sheet).findIndex(p => p.id === postData.id);
-      if (idx !== -1) sheet.deleteRow(idx + 2);
-      return contentResponse({ status: "success" });
-    }
-    
-    // SAVE SETTINGS
-    if (action === "saveSettings") {
-      const sheet = ss.getSheetByName("Settings");
-      const settings = postData.settings;
-      const rows = sheet.getDataRange().getValues();
-      for (let i = 1; i < rows.length; i++) {
-        const key = rows[i][0];
-        if (settings[key] !== undefined) sheet.getRange(i + 1, 2).setValue(settings[key]);
-      }
-      return contentResponse({ status: "success" });
-    }
-    
-    // Kategori & Users skip for brevity... sama seperti versi sebelumnya
-    return contentResponse({ status: "success", message: "Aksi sukses divalidasi API." });
-  } catch (err) {
-    return contentResponse({ status: "error", message: err.toString() });
-  }
-}
-
-// FUNGSI UNGGUH GAMBAR KE GOOGLE DRIVE
-function uploadImageToDrive(base64Data, fileName) {
-  try {
-    const rawData = Utilities.base64Decode(base64Data.split(",")[1]);
-    const blob = Utilities.newBlob(rawData, "image/png", fileName);
-    let folder;
-    const folders = DriveApp.getFoldersByName("Media_Blog");
-    if (folders.hasNext()) folder = folders.next();
-    else folder = DriveApp.createFolder("Media_Blog");
-    
-    const file = folder.createFile(blob);
-    file.setSharing(DriveApp.Access.ANYONE_WITH_LINK, DriveApp.Permission.VIEW);
-    return "https://lh3.googleusercontent.com/d/" + file.getId();
-  } catch (e) {
-    return ""; 
-  }
-}
-
-function getSheetData(sheet) {
-  if (!sheet) return [];
-  const vals = sheet.getDataRange().getValues();
-  const headers = vals[0];
-  return vals.slice(1).map(row => headers.reduce((obj, h, i) => { obj[h] = row[i]; return obj; }, {}));
-}
-
-function getSettingsMap(sheet) {
-  if (!sheet) return {};
-  const vals = sheet.getDataRange().getValues();
-  return vals.slice(1).reduce((map, row) => { map[row[0]] = row[1]; return map; }, {});
-}
-
-function contentResponse(data) {
-  return ContentService.createTextOutput(JSON.stringify(data)).setMimeType(ContentService.MimeType.JSON);
-}
-                        </pre>
-                    </div>
-
-                    <h3 class="font-bold text-slate-800 text-base pt-4 flex items-center gap-2">
-                        <span class="w-6 h-6 bg-slate-800 text-white rounded-full flex items-center justify-center text-xs">2</span>
-                        Deploy & Selesai
-                    </h3>
-                    <ol class="list-decimal list-inside space-y-3 text-sm text-slate-600 pl-2">
-                        <li>Jalankan fungsi <code>setupDatabase</code> di Apps Script (Pilih fungsi di menu atas, klik <strong>Jalankan</strong>).</li>
-                        <li>Klik <strong>Terapkan (Deploy)</strong> &gt; <strong>Terapkan Baru</strong>. Jenis: <strong>Aplikasi Web</strong>.</li>
-                        <li>Setel Akses ke: <strong>Siapa Saja (Anyone)</strong>. Salin URL Aplikasi Web. Tempel di kolom atas. Selesai!</li>
-                    </ol>
-                </div>
-            </div>
-        </section>
-
-    </main>
-
-    <!-- FOOTER -->
-    <footer class="bg-slate-900 text-slate-300 mt-12 py-12 border-t-[6px] border-blue-700">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 md:grid-cols-3 gap-10">
-            <div class="space-y-4">
-                <div class="flex items-center space-x-3">
-                    <div class="w-12 h-12 bg-white rounded-xl flex items-center justify-center shadow-md">
-                        <i class="fa-solid fa-landmark text-blue-800 text-2xl"></i>
-                    </div>
-                    <div>
-                        <h4 class="font-bold uppercase tracking-tight text-white" id="footer-title">DISDUKCAPIL Tolitoli</h4>
-                        <p class="text-[11px] text-slate-400 font-medium">Pemerintah Kabupaten Tolitoli</p>
-                    </div>
-                </div>
-                <p class="text-sm leading-relaxed" id="footer-desc">
-                    Memberikan pelayanan administrasi kependudukan yang cepat, transparan, akurat, dan ramah menuju masyarakat Kabupaten Tolitoli yang tertib administrasi.
-                </p>
-            </div>
-
-            <div class="space-y-5">
-                <h4 class="font-bold border-b border-slate-700 pb-3 text-sm text-white uppercase tracking-wider">Hubungi Kami</h4>
-                <ul class="space-y-3 text-sm">
-                    <li class="flex items-start gap-3">
-                        <i class="fa-solid fa-map-location-dot mt-1 text-blue-400 w-4 text-center"></i>
-                        <span id="footer-address">Jl. Jenderal Sudirman No. 12, Kabupaten Tolitoli</span>
-                    </li>
-                    <li class="flex items-center gap-3">
-                        <i class="fa-solid fa-phone text-blue-400 w-4 text-center"></i>
-                        <span id="footer-phone">0811-1234-5678</span>
-                    </li>
-                    <li class="flex items-center gap-3">
-                        <i class="fa-solid fa-envelope text-blue-400 w-4 text-center"></i>
-                        <span id="footer-email">info@disdukcapil.tolitolikab.go.id</span>
-                    </li>
-                </ul>
-            </div>
-
-            <div class="space-y-5">
-                <h4 class="font-bold border-b border-slate-700 pb-3 text-sm text-white uppercase tracking-wider">Tautan Pintas</h4>
-                <ul class="space-y-2.5 text-sm">
-                    <li><a href="#" onclick="switchView('home'); return false;" class="hover:text-white hover:translate-x-1 inline-block transition transform"><i class="fa-solid fa-angle-right text-[10px] mr-2 text-blue-500"></i>Beranda Portal</a></li>
-                    <li><a href="#" onclick="switchView('login'); return false;" class="hover:text-white hover:translate-x-1 inline-block transition transform"><i class="fa-solid fa-angle-right text-[10px] mr-2 text-blue-500"></i>Masuk Portal Internal</a></li>
-                    <li><a href="#" onclick="switchView('setup-guide'); return false;" class="hover:text-white hover:translate-x-1 inline-block transition transform"><i class="fa-solid fa-angle-right text-[10px] mr-2 text-blue-500"></i>Panduan Setup Database</a></li>
-                </ul>
-            </div>
-        </div>
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-10 pt-6 border-t border-slate-800 text-center text-xs text-slate-500 flex flex-col md:flex-row md:justify-between gap-3">
-            <span id="footer-copyright">© 2026 DISDUKCAPIL Kabupaten Tolitoli.</span>
-            <span class="font-medium text-slate-400">Sistem Informasi Publik</span>
-        </div>
-    </footer>
-
-
-    <!-- ==================== JAVASCRIPT LOGIC ==================== -->
-    <script>
-        // API & Auth State
-        let API_URL = localStorage.getItem('disdukcapil_api_url') || "";
-        let isDemoMode = !API_URL;
-        let currentUser = JSON.parse(sessionStorage.getItem('disdukcapil_user')) || null;
-        let currentFilterCategory = "";
-
-        // Carousel State
-        let currentSlideIdx = 0;
-        let carouselTimer = null;
-        let carouselImagesArr = [];
-
-        // In-Memory Database (Demo Mode)
-        let appData = {
-            posts: [
-                {
-                    id: "post-1",
-                    title: "Layanan Perekaman KTP-el Keliling Kecamatan Baolan",
-                    slug: "layanan-perekaman-ktp-el-keliling",
-                    content: "<p>Mendekatkan pelayanan kepada masyarakat, Tim Dinas Kependudukan hadir di desa-desa untuk perekaman KTP Elektronik secara gratis.</p><p>Harap membawa Fotokopi Kartu Keluarga ke lokasi.</p>",
-                    thumbnail_url: "https://images.unsplash.com/photo-1541872703-74c5e44368f9?q=80&w=800",
-                    category_id: "cat-1",
-                    author_id: "admin-1",
-                    status: "published",
-                    created_at: new Date().toISOString()
-                },
-                {
-                    id: "post-2",
-                    title: "Penerapan KIA (Kartu Identitas Anak) Ditingkatkan",
-                    slug: "penerapan-kia-ditingkatkan",
-                    content: "<p>Kabupaten Tolitoli terus menggenjot kepemilikan KIA bagi anak usia 0 hingga 17 tahun kurang satu hari.</p>",
-                    thumbnail_url: "https://images.unsplash.com/photo-1509062522246-3755977927d7?q=80&w=800",
-                    category_id: "cat-2",
-                    author_id: "admin-1",
-                    status: "published",
-                    created_at: new Date().toISOString()
-                },
-                {
-                    id: "post-3",
-                    title: "[DRAFT] Revisi Syarat Akta Kelahiran 2026",
-                    slug: "revisi-syarat-akta-kelahiran",
-                    content: "<p>Terdapat beberapa perubahan pada syarat pengurusan akta kelahiran terbaru...</p>",
-                    thumbnail_url: "https://images.unsplash.com/photo-1450133064473-71024230f91b?q=80&w=800",
-                    category_id: "cat-1",
-                    author_id: "editor-1",
-                    status: "draft",
-                    created_at: new Date().toISOString()
-                }
-            ],
-            categories: [
-                { id: "cat-1", name: "Pengumuman", slug: "pengumuman" },
-                { id: "cat-2", name: "Berita Desa", slug: "berita-desa" }
-            ],
-            users: [
-                { id: "admin-1", email: "admin@domain.com", password_hash: "admin123", name: "Kepala Admin", role: "admin" },
-                { id: "editor-1", email: "editor@domain.com", password_hash: "editor123", name: "Budi Penulis", role: "editor" }
-            ],
-            settings: {
-                site_title: "DISDUKCAPIL Tolitoli",
-                logo_url: "", // Kosong = ikon default
-                carousel_urls: "https://images.unsplash.com/photo-1541872703-74c5e44368f9?q=80&w=1200\nhttps://images.unsplash.com/photo-1509062522246-3755977927d7?q=80&w=1200\nhttps://images.unsplash.com/photo-1450133064473-71024230f91b?q=80&w=1200",
-                contact_email: "info@disdukcapil.tolitolikab.go.id",
-                office_address: "Jl. Jenderal Sudirman No. 12, Kab. Tolitoli, Sulawesi Tengah",
-                phone: "0811-1234-5678",
-                copyright: "© 2026 DISDUKCAPIL Kabupaten Tolitoli."
-            }
-        };
-
-        // Initialize App
-        window.onload = function() {
-            document.getElementById('api-url-input').value = API_URL;
-            checkAuthUI();
-            
-            if (isDemoMode) {
-                document.getElementById('mode-banner').classList.remove('hidden');
-                applySettings();
-                renderPublicHome();
-            } else {
-                document.getElementById('mode-banner').classList.add('hidden');
-                fetchPublicData();
-            }
-        };
-
-        // UI View Switcher
-        function switchView(viewId) {
-            document.querySelectorAll('.view-section').forEach(el => el.classList.add('hidden'));
-            document.getElementById('view-' + viewId).classList.remove('hidden');
-            
-            // Tab active states (Top Nav)
-            document.querySelectorAll('.nav-btn').forEach(btn => {
-                btn.classList.remove('text-blue-900', 'bg-blue-50', 'font-bold');
-                btn.classList.add('font-medium');
-            });
-            let activeBtn = document.getElementById('nav-' + viewId);
-            if(activeBtn) {
-                activeBtn.classList.add('text-blue-900', 'bg-blue-50', 'font-bold');
-                activeBtn.classList.remove('font-medium');
-            }
-
-            // Window scroll top
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-
-            if(viewId === 'dashboard') {
-                if(!currentUser) {
-                    switchView('login');
-                    return;
-                }
-                renderDashboard();
-            }
-            if(viewId === 'home') {
-                renderPublicHome();
-            }
-        }
-
-        function checkAuthUI() {
-            const authBtnContainer = document.getElementById('auth-header-btn');
-            const adminActionContainer = document.getElementById('top-admin-actions');
-
-            if (currentUser) {
-                // Tampilkan Dashboard di Header
-                authBtnContainer.innerHTML = `
-                    <button onclick="switchView('dashboard')" class="bg-blue-100 hover:bg-blue-200 text-blue-800 font-bold px-4 py-2 rounded-lg transition text-sm flex items-center gap-2">
-                        <div class="w-6 h-6 bg-blue-700 text-white rounded-full flex items-center justify-center text-[10px]">${currentUser.name.charAt(0)}</div>
-                        Dashboard
-                    </button>
                 `;
-                
-                // Tampilkan Tombol Setup di Top Bar
-                adminActionContainer.innerHTML = `
-                    <button onclick="switchView('setup-guide')" class="bg-yellow-500 hover:bg-yellow-600 text-blue-950 font-bold px-3 py-1 rounded transition text-[11px] flex items-center space-x-1 shadow-sm">
-                        <i class="fa-solid fa-gears"></i>
-                        <span class="hidden sm:inline">Panduan Setup GAS & DB</span>
-                        <span class="sm:hidden">Setup</span>
-                    </button>
-                `;
-            } else {
-                authBtnContainer.innerHTML = `
-                    <button onclick="switchView('login')" class="bg-blue-700 hover:bg-blue-800 text-white font-bold px-4 py-2 rounded-lg transition text-sm flex items-center gap-2">
-                        <i class="fa-solid fa-lock text-[11px]"></i> Login Portal
-                    </button>
-                `;
-                adminActionContainer.innerHTML = '';
-            }
-        }
+            },
 
-        // ---------------- CAROUSEL LOGIC ----------------
-        function initCarousel() {
-            const container = document.getElementById('carousel-slides');
-            const dotsContainer = document.getElementById('carousel-dots');
-            container.innerHTML = '';
-            dotsContainer.innerHTML = '';
-            
-            let urlsRaw = appData.settings.carousel_urls || "https://images.unsplash.com/photo-1541872703-74c5e44368f9?q=80&w=1200";
-            carouselImagesArr = urlsRaw.split('\n').map(u => u.trim()).filter(u => u !== '');
-            if(carouselImagesArr.length === 0) carouselImagesArr = ["https://images.unsplash.com/photo-1541872703-74c5e44368f9?q=80&w=1200"];
-
-            carouselImagesArr.forEach((url, index) => {
-                // Image Slide
-                const slide = document.createElement('div');
-                slide.className = `absolute inset-0 transition-opacity duration-1000 ease-in-out ${index === 0 ? 'opacity-100' : 'opacity-0'}`;
-                slide.id = `slide-${index}`;
-                slide.innerHTML = `<img src="${url}" class="w-full h-full object-cover" alt="Banner ${index}" onerror="this.src='https://images.unsplash.com/photo-1541872703-74c5e44368f9?q=80&w=1200'">`;
-                container.appendChild(slide);
-
-                // Dot Indicator
-                const dot = document.createElement('button');
-                dot.className = `h-2 rounded-full transition-all duration-300 ${index === 0 ? 'bg-white w-6' : 'bg-white/40 w-2 hover:bg-white/70'}`;
-                dot.onclick = () => goToSlide(index);
-                dot.id = `dot-${index}`;
-                dotsContainer.appendChild(dot);
-            });
-
-            currentSlideIdx = 0;
-            startCarouselTimer();
-        }
-
-        function goToSlide(idx) {
-            if(carouselImagesArr.length <= 1) return;
-            // Hide current
-            document.getElementById(`slide-${currentSlideIdx}`).classList.replace('opacity-100', 'opacity-0');
-            document.getElementById(`dot-${currentSlideIdx}`).classList.replace('bg-white', 'bg-white/40');
-            document.getElementById(`dot-${currentSlideIdx}`).classList.replace('w-6', 'w-2');
-            
-            currentSlideIdx = idx;
-            
-            // Show new
-            document.getElementById(`slide-${currentSlideIdx}`).classList.replace('opacity-0', 'opacity-100');
-            document.getElementById(`dot-${currentSlideIdx}`).classList.replace('bg-white/40', 'bg-white');
-            document.getElementById(`dot-${currentSlideIdx}`).classList.replace('w-2', 'w-6');
-            startCarouselTimer(); // Reset timer
-        }
-
-        function nextSlide() { goToSlide((currentSlideIdx + 1) % carouselImagesArr.length); }
-        function prevSlide() { goToSlide((currentSlideIdx - 1 + carouselImagesArr.length) % carouselImagesArr.length); }
-
-        function startCarouselTimer() {
-            clearInterval(carouselTimer);
-            if(carouselImagesArr.length > 1) {
-                carouselTimer = setInterval(nextSlide, 5000);
-            }
-        }
-
-        // ---------------- SETTINGS & DATA INJECTION ----------------
-        function applySettings() {
-            try {
-                const s = appData.settings;
-                
-                // Texts
-                document.title = s.site_title + " - Portal Berita";
-                document.getElementById('header-site-title').innerText = s.site_title;
-                document.getElementById('hero-title-text').innerText = s.site_title;
-                document.getElementById('footer-title').innerText = s.site_title;
-                
-                document.getElementById('top-email').innerText = s.contact_email;
-                document.getElementById('footer-email').innerText = s.contact_email;
-                document.getElementById('top-address').innerText = s.office_address;
-                document.getElementById('footer-address').innerText = s.office_address;
-                document.getElementById('footer-phone').innerText = s.phone;
-                document.getElementById('footer-copyright').innerText = s.copyright;
-
-                // Logo Dynamic Logic
-                const iconEl = document.getElementById('default-logo-icon');
-                const imgEl = document.getElementById('custom-logo-img');
-                const containerEl = document.getElementById('logo-container');
-                
-                if(s.logo_url && s.logo_url.trim() !== '') {
-                    iconEl.classList.add('hidden');
-                    imgEl.classList.remove('hidden');
-                    imgEl.src = s.logo_url;
-                    containerEl.classList.replace('bg-blue-900', 'bg-white'); // white bg for logos
-                } else {
-                    iconEl.classList.remove('hidden');
-                    imgEl.classList.add('hidden');
-                    containerEl.classList.replace('bg-white', 'bg-blue-900');
-                }
-
-                initCarousel();
-            } catch (err) {
-                console.error("Error applying settings:", err);
-            }
-        }
-
-        function renderPublicHome() {
-            // Render Categories
-            const catContainer = document.getElementById('public-categories-list');
-            catContainer.innerHTML = '';
-            appData.categories.forEach(cat => {
-                const isActive = cat.id === currentFilterCategory;
-                catContainer.innerHTML += `
-                    <button onclick="filterCategory('${cat.id}')" class="px-3 py-1.5 rounded-full text-xs font-bold transition border ${isActive ? 'bg-blue-700 text-white border-blue-700 shadow-md' : 'bg-white text-slate-600 border-slate-300 hover:bg-slate-100'}">
-                        ${cat.name}
-                    </button>
-                `;
-            });
-
-            // Handle Clear Filter btn visibility
-            document.getElementById('btn-clear-filter').style.display = currentFilterCategory ? 'block' : 'none';
-
-            // Filter Published Posts ONLY
-            let posts = appData.posts.filter(p => p.status === 'published');
-            
-            // Search & Category Filter
-            const keyword = document.getElementById('search-input').value.toLowerCase();
-            if (currentFilterCategory) {
-                posts = posts.filter(p => p.category_id === currentFilterCategory);
-            }
-            if (keyword) {
-                posts = posts.filter(p => p.title.toLowerCase().includes(keyword) || p.content.toLowerCase().includes(keyword));
-            }
-
-            // Sort newest first
-            posts.sort((a,b) => new Date(b.created_at) - new Date(a.created_at));
-
-            // Render Posts
-            const grid = document.getElementById('public-posts-grid');
-            const emptyState = document.getElementById('posts-empty-state');
-            document.getElementById('post-count-badge').innerText = `${posts.length} Publikasi`;
-
-            if (posts.length === 0) {
-                grid.innerHTML = '';
-                emptyState.classList.remove('hidden');
-            } else {
-                emptyState.classList.add('hidden');
-                grid.innerHTML = posts.map(post => {
-                    const cat = appData.categories.find(c => c.id === post.category_id)?.name || 'Uncategorized';
-                    const date = new Date(post.created_at).toLocaleDateString('id-ID', {day:'numeric', month:'short', year:'numeric'});
-                    
-                    // Simple text excerpt from HTML
-                    const tempDiv = document.createElement("div");
-                    tempDiv.innerHTML = post.content;
-                    const excerpt = tempDiv.textContent.substring(0, 100) + "...";
-
+            renderAdminArtikel: (container) => {
+                let rows = app.articles.map((a, i) => {
+                    let badgeStatus = a.status === 'Publish' ? 'bg-success' : 'bg-secondary';
                     return `
-                        <article class="bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 border border-slate-200 group cursor-pointer flex flex-col h-full" onclick="viewPost('${post.id}')">
-                            <div class="h-48 overflow-hidden relative">
-                                <img src="${post.thumbnail_url}" alt="${post.title}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
-                                <div class="absolute top-3 left-3 bg-blue-600/90 backdrop-blur-sm text-white text-[10px] font-bold px-2 py-1 rounded shadow-sm">${cat}</div>
-                            </div>
-                            <div class="p-5 flex-grow flex flex-col">
-                                <div class="flex items-center gap-2 text-[11px] text-slate-500 font-medium mb-2">
-                                    <i class="fa-regular fa-calendar"></i> ${date}
-                                </div>
-                                <h3 class="font-extrabold text-slate-800 text-lg leading-snug mb-2 group-hover:text-blue-700 transition line-clamp-2">${post.title}</h3>
-                                <p class="text-sm text-slate-600 line-clamp-3 mb-4 flex-grow">${excerpt}</p>
-                                <div class="flex items-center text-blue-700 font-bold text-xs group-hover:text-blue-800">
-                                    Baca Selengkapnya <i class="fa-solid fa-arrow-right-long ml-2 transform group-hover:translate-x-1 transition"></i>
-                                </div>
-                            </div>
-                        </article>
-                    `;
-                }).join('');
-            }
-        }
-
-        function filterCategory(catId) {
-            currentFilterCategory = catId;
-            renderPublicHome();
-        }
-
-        function handleSearch(e) {
-            renderPublicHome();
-        }
-
-        function viewPost(postId) {
-            const post = appData.posts.find(p => p.id === postId);
-            if (!post) return;
-
-            const cat = appData.categories.find(c => c.id === post.category_id)?.name || 'Uncategorized';
-            const author = appData.users ? (appData.users.find(u => u.id === post.author_id)?.name || 'Admin') : 'Admin';
-            
-            document.getElementById('detail-image').src = post.thumbnail_url;
-            document.getElementById('detail-category').innerText = cat;
-            document.getElementById('detail-date').innerText = new Date(post.created_at).toLocaleDateString('id-ID', {day:'numeric', month:'long', year:'numeric'});
-            document.getElementById('detail-author').innerText = author;
-            document.getElementById('detail-title').innerText = post.title;
-            document.getElementById('detail-content').innerHTML = post.content;
-
-            switchView('post-detail');
-        }
-
-        // ---------------- AUTHENTICATION ----------------
-        function handleLogin(e) {
-            e.preventDefault();
-            const email = document.getElementById('login-email').value;
-            const pass = document.getElementById('login-password').value;
-            const errBox = document.getElementById('login-error');
-
-            if (isDemoMode) {
-                // Offline verification
-                const user = appData.users.find(u => u.email === email && u.password_hash === pass);
-                if (user) {
-                    processLoginSuccess({ id: user.id, name: user.name, email: user.email, role: user.role });
-                } else {
-                    errBox.classList.remove('hidden');
-                }
-            } else {
-                // API Request
-                fetch(API_URL, {
-                    method: 'POST',
-                    body: JSON.stringify({ action: 'login', email: email, password: pass })
-                })
-                .then(res => res.json())
-                .then(res => {
-                    if (res.status === 'success') {
-                        processLoginSuccess(res.user);
-                    } else {
-                        errBox.innerText = res.message || "Gagal login!";
-                        errBox.classList.remove('hidden');
-                    }
-                })
-                .catch(err => {
-                    errBox.innerText = "Error koneksi ke server.";
-                    errBox.classList.remove('hidden');
-                });
-            }
-        }
-
-        function processLoginSuccess(userObj) {
-            currentUser = userObj;
-            sessionStorage.setItem('disdukcapil_user', JSON.stringify(currentUser));
-            document.getElementById('login-error').classList.add('hidden');
-            checkAuthUI();
-            
-            // Reload data if Admin to get hidden data (like passwords)
-            if(!isDemoMode && currentUser.role === 'admin') {
-                fetchAdminData(); 
-            } else {
-                switchView('dashboard');
-            }
-        }
-
-        function handleLogout() {
-            currentUser = null;
-            sessionStorage.removeItem('disdukcapil_user');
-            checkAuthUI();
-            switchView('home');
-        }
-
-        // ---------------- DASHBOARD & ROLES ----------------
-        function renderDashboard() {
-            if(!currentUser) return;
-            
-            // Update Profile Header
-            document.getElementById('dash-user-name').innerText = currentUser.name;
-            document.getElementById('dash-user-email').innerText = currentUser.email;
-            
-            const roleBadge = document.getElementById('dash-user-role');
-            if(currentUser.role === 'admin') {
-                roleBadge.innerText = "Administrator";
-                roleBadge.className = "bg-rose-600 text-white text-[10px] font-bold px-2.5 py-0.5 rounded-full uppercase tracking-wider shadow-sm";
-            } else {
-                roleBadge.innerText = "Staf Editor";
-                roleBadge.className = "bg-blue-600 text-white text-[10px] font-bold px-2.5 py-0.5 rounded-full uppercase tracking-wider shadow-sm";
-            }
-
-            // Role-based UI visibility
-            const elsHiddenForEditor = document.querySelectorAll('.hidden-for-editor');
-            if(currentUser.role === 'editor') {
-                elsHiddenForEditor.forEach(el => el.style.display = 'none');
-                document.getElementById('posts-desc-role').innerText = "Hanya dapat memodifikasi (Draft/Edit) artikel milik Anda sendiri.";
-            } else {
-                elsHiddenForEditor.forEach(el => el.style.display = 'block'); // Admin sees all
-                document.getElementById('posts-desc-role').innerText = "Akses penuh manajemen seluruh artikel (Publish/Edit/Delete).";
-            }
-
-            // Stats
-            const totalPosts = appData.posts.length;
-            const publishedPosts = appData.posts.filter(p=>p.status==='published').length;
-            const draftPosts = totalPosts - publishedPosts;
-            const totalCats = appData.categories.length;
-
-            document.getElementById('stats-container').innerHTML = `
-                <div class="bg-white border border-slate-200 p-4 rounded-xl shadow-sm border-l-4 border-l-blue-600">
-                    <p class="text-xs text-slate-500 font-bold uppercase tracking-wider">Total Artikel</p>
-                    <p class="text-2xl font-extrabold text-slate-800">${totalPosts}</p>
-                </div>
-                <div class="bg-white border border-slate-200 p-4 rounded-xl shadow-sm border-l-4 border-l-green-500">
-                    <p class="text-xs text-slate-500 font-bold uppercase tracking-wider">Dipublikasi</p>
-                    <p class="text-2xl font-extrabold text-slate-800">${publishedPosts}</p>
-                </div>
-                <div class="bg-white border border-slate-200 p-4 rounded-xl shadow-sm border-l-4 border-l-yellow-500">
-                    <p class="text-xs text-slate-500 font-bold uppercase tracking-wider">Draft Disimpan</p>
-                    <p class="text-2xl font-extrabold text-slate-800">${draftPosts}</p>
-                </div>
-                ${currentUser.role === 'admin' ? `
-                <div class="bg-white border border-slate-200 p-4 rounded-xl shadow-sm border-l-4 border-l-indigo-500 hidden-for-editor">
-                    <p class="text-xs text-slate-500 font-bold uppercase tracking-wider">Total Kategori</p>
-                    <p class="text-2xl font-extrabold text-slate-800">${totalCats}</p>
-                </div>` : ''}
-            `;
-
-            switchDashTab('posts'); // Default tab
-        }
-
-        function switchDashTab(tabId) {
-            document.querySelectorAll('.dash-panel').forEach(el => el.classList.add('hidden'));
-            document.getElementById('dash-panel-' + tabId).classList.remove('hidden');
-            
-            document.querySelectorAll('.dash-tab').forEach(btn => {
-                btn.classList.remove('active-dash-tab', 'border-blue-600', 'text-blue-700');
-                btn.classList.add('border-transparent', 'text-slate-500');
-            });
-            let activeBtn = document.getElementById('dash-tab-' + tabId);
-            if(activeBtn) {
-                activeBtn.classList.remove('border-transparent', 'text-slate-500');
-                activeBtn.classList.add('active-dash-tab', 'border-blue-600', 'text-blue-700');
-            }
-
-            if (tabId === 'posts') renderPostsTable();
-            if (tabId === 'categories' && currentUser.role === 'admin') renderCategoriesTable();
-            if (tabId === 'users' && currentUser.role === 'admin') renderUsersTable();
-            if (tabId === 'settings' && currentUser.role === 'admin') populateSettingsForm();
-        }
-
-        function renderPostsTable() {
-            const tbody = document.getElementById('dash-posts-table-body');
-            tbody.innerHTML = '';
-            
-            // Sort by new
-            let posts = [...appData.posts].sort((a,b) => new Date(b.created_at) - new Date(a.created_at));
-
-            posts.forEach(post => {
-                const cat = appData.categories.find(c => c.id === post.category_id)?.name || 'Unknown';
-                const authorInfo = appData.users ? appData.users.find(u => u.id === post.author_id) : null;
-                const authorName = authorInfo ? authorInfo.name : 'Unknown';
-                
-                let statusBadge = post.status === 'published' 
-                    ? `<span class="bg-emerald-100 text-emerald-800 text-[10px] font-bold px-2 py-1 rounded-full uppercase border border-emerald-200">Published</span>`
-                    : `<span class="bg-amber-100 text-amber-800 text-[10px] font-bold px-2 py-1 rounded-full uppercase border border-amber-200">Draft</span>`;
-
-                // Logic Akses Tombol Aksi
-                let actionBtns = '';
-                if(currentUser.role === 'admin' || post.author_id === currentUser.id) {
-                    actionBtns = `
-                        <button onclick="openPostEditor('${post.id}')" class="text-blue-600 hover:text-blue-900 bg-blue-50 hover:bg-blue-100 p-2 rounded transition" title="Edit"><i class="fa-solid fa-pen-to-square"></i></button>
-                        <button onclick="deletePost('${post.id}')" class="text-rose-600 hover:text-rose-900 bg-rose-50 hover:bg-rose-100 p-2 rounded transition ml-1" title="Hapus"><i class="fa-solid fa-trash-can"></i></button>
-                    `;
-                } else {
-                    actionBtns = `<span class="text-[10px] text-slate-400 font-bold bg-slate-100 px-2 py-1 rounded">Read-Only</span>`;
-                }
-
-                tbody.innerHTML += `
-                    <tr class="hover:bg-slate-50 transition-colors">
-                        <td class="px-5 py-3"><img src="${post.thumbnail_url}" class="w-14 h-10 object-cover rounded shadow-sm border border-slate-200"></td>
-                        <td class="px-5 py-3 font-bold text-slate-800 text-sm max-w-xs truncate" title="${post.title}">${post.title}</td>
-                        <td class="px-5 py-3 text-xs font-semibold text-slate-600">${cat}</td>
-                        <td class="px-5 py-3 text-xs text-slate-500">${authorName}</td>
-                        <td class="px-5 py-3 text-center">${statusBadge}</td>
-                        <td class="px-5 py-3 text-right whitespace-nowrap">${actionBtns}</td>
+                    <tr>
+                        <td>${i + 1}</td>
+                        <td><img src="${a.image}" height="50" class="rounded shadow-sm" style="object-fit:cover; width:80px;"></td>
+                        <td>
+                            <div class="fw-bold">${a.title}</div>
+                            <div class="text-muted small"><i class="far fa-calendar-alt me-1"></i> ${a.date}</div>
+                        </td>
+                        <td><span class="badge bg-primary bg-opacity-10 text-primary border border-primary-subtle">${a.category}</span></td>
+                        <td><span class="badge ${badgeStatus}">${a.status || 'Publish'}</span></td>
+                        <td>
+                            <button class="btn btn-sm btn-info text-white me-1 mb-1" onclick="app.editArtikel(${a.id})"><i class="fas fa-edit"></i> Edit</button>
+                            <button class="btn btn-sm btn-danger mb-1" onclick="app.deleteArtikel(${a.id})"><i class="fas fa-trash"></i> Hapus</button>
+                        </td>
                     </tr>
+                `}).join('');
+
+                container.innerHTML = `
+                    <div class="card border-0 shadow-sm">
+                        <div class="card-header bg-white p-3 d-flex justify-content-between align-items-center">
+                            <h6 class="mb-0 fw-bold">Daftar Artikel & Berita</h6>
+                            <button class="btn btn-primary btn-sm" onclick="app.openModalArtikel()"><i class="fas fa-plus me-1"></i> Tambah Artikel</button>
+                        </div>
+                        <div class="card-body p-0">
+                            <div class="table-responsive">
+                                <table class="table table-hover mb-0 align-middle">
+                                    <thead class="table-light"><tr><th>No</th><th>Thumbnail</th><th>Judul & Tanggal</th><th>Kategori</th><th>Status</th><th>Aksi</th></tr></thead>
+                                    <tbody>${rows || '<tr><td colspan="6" class="text-center py-4">Belum ada artikel.</td></tr>'}</tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
                 `;
-            });
-        }
+            },
 
-        // ---------------- POST WRITER LOGIC ----------------
-        function openPostEditor(id = null) {
-            const form = document.getElementById('post-writer-form');
-            form.reset();
-            document.getElementById('writer-post-id').value = '';
-            document.getElementById('writer-content').innerHTML = '';
-            document.getElementById('writer-image-preview').classList.add('hidden');
-            document.getElementById('writer-image-placeholder').classList.remove('hidden');
-            
-            // Populate Categories Select
-            const catSelect = document.getElementById('writer-category');
-            catSelect.innerHTML = appData.categories.map(c => `<option value="${c.id}">${c.name}</option>`).join('');
+            // --- STREAMING_CHUNK: Admin User Render ---
 
-            // Role Logic for Status Select
-            const statusSelect = document.getElementById('writer-status');
-            const roleInfo = document.getElementById('writer-role-info');
-            
-            if(currentUser.role === 'admin') {
-                roleInfo.innerText = "Mode Administrator - Hak akses penuh";
-                statusSelect.innerHTML = `
-                    <option value="published">Publish Langsung Tampil</option>
-                    <option value="draft">Simpan sbg Draft Internal</option>
+            renderAdminUser: (container) => {
+                let rows = app.users.map((u, i) => {
+                    let badgeRole = u.role === 'Admin' ? 'bg-danger' : 'bg-primary';
+                    let badgeStatus = u.status === 'Aktif' ? 'bg-success' : 'bg-secondary';
+                    return `
+                    <tr>
+                        <td>${i + 1}</td>
+                        <td class="fw-bold">${u.nama}</td>
+                        <td>${u.email}</td>
+                        <td><span class="badge ${badgeRole}">${u.role}</span></td>
+                        <td><span class="badge ${badgeStatus}">${u.status}</span></td>
+                        <td>
+                            <button class="btn btn-sm btn-info text-white me-1 mb-1" onclick="app.editUser(${u.id})"><i class="fas fa-edit"></i> Edit</button>
+                            <button class="btn btn-sm btn-danger mb-1" onclick="app.deleteUser(${u.id})"><i class="fas fa-trash"></i> Hapus</button>
+                        </td>
+                    </tr>
+                `}).join('');
+
+                container.innerHTML = `
+                    <div class="card border-0 shadow-sm">
+                        <div class="card-header bg-white p-3 d-flex justify-content-between align-items-center">
+                            <h6 class="mb-0 fw-bold">Daftar Pengguna Sistem</h6>
+                            <button class="btn btn-primary btn-sm" onclick="app.openModalUser()"><i class="fas fa-plus me-1"></i> Tambah User</button>
+                        </div>
+                        <div class="card-body p-0">
+                            <div class="table-responsive">
+                                <table class="table table-hover mb-0 align-middle">
+                                    <thead class="table-light"><tr><th>No</th><th>Nama Lengkap</th><th>Username/Email</th><th>Role</th><th>Status</th><th>Aksi</th></tr></thead>
+                                    <tbody>${rows || '<tr><td colspan="6" class="text-center py-4">Belum ada user.</td></tr>'}</tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
                 `;
-                statusSelect.disabled = false;
-            } else {
-                roleInfo.innerText = "Mode Editor - Artikel akan disimpan sebagai Draft.";
-                statusSelect.innerHTML = `<option value="draft">Simpan sbg Draft (Perlu Review Admin)</option>`;
-                statusSelect.disabled = true; // Editor cant change it anyway
-            }
+            },
 
-            if (id) {
-                // EDIT MODE
-                const post = appData.posts.find(p => p.id === id);
-                if (post) {
-                    document.getElementById('writer-title-label').innerText = "Edit Artikel";
-                    document.getElementById('writer-post-id').value = post.id;
-                    document.getElementById('writer-title').value = post.title;
-                    catSelect.value = post.category_id;
-                    if(currentUser.role === 'admin') statusSelect.value = post.status;
-                    
-                    document.getElementById('writer-content').innerHTML = post.content;
-                    if(post.thumbnail_url) {
-                        document.getElementById('writer-image-preview').src = post.thumbnail_url;
-                        document.getElementById('writer-image-preview').classList.remove('hidden');
-                        document.getElementById('writer-image-placeholder').classList.add('hidden');
-                    }
-                }
-            } else {
-                // CREATE MODE
-                document.getElementById('writer-title-label').innerText = "Tulis Artikel Baru";
-            }
-            switchView('post-writer');
-        }
+            // --- STREAMING_CHUNK: Admin Pengaduan & Survey Render ---
 
-        function formatDoc(cmd, value=null) {
-            document.execCommand(cmd, false, value);
-            document.getElementById('writer-content').focus();
-        }
+            renderAdminPengaduan: (container) => {
+                let rows = app.pengaduan.map((p, i) => {
+                    let badgeColor = p.status === 'Baru' ? 'bg-danger' : (p.status === 'Diproses' ? 'bg-warning text-dark' : 'bg-success');
+                    return `
+                    <tr>
+                        <td>${i + 1}</td>
+                        <td>
+                            <div class="fw-bold">${p.nama}</div>
+                            <div class="text-muted small">${p.nik}</div>
+                        </td>
+                        <td><span class="badge bg-light text-dark border">${p.kategori}</span></td>
+                        <td>${p.tanggal}</td>
+                        <td><span class="badge ${badgeColor}">${p.status}</span></td>
+                        <td>
+                            <button class="btn btn-sm btn-info text-white mb-1" onclick="Swal.fire({title: 'Detail Pengaduan', text: '${p.isi}', icon: 'info'})"><i class="fas fa-eye"></i> Baca</button>
+                            ${p.status !== 'Selesai' ? `<button class="btn btn-sm btn-primary mb-1" onclick="app.updateStatusPengaduan(${p.id})"><i class="fas fa-tasks"></i> Update Status</button>` : ''}
+                        </td>
+                    </tr>
+                `}).join('');
 
-        function previewImageFile(e) {
-            const file = e.target.files[0];
-            if(file) {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    document.getElementById('writer-image-preview').src = e.target.result;
-                    document.getElementById('writer-image-preview').classList.remove('hidden');
-                    document.getElementById('writer-image-placeholder').classList.add('hidden');
-                }
-                reader.readAsDataURL(file);
-            }
-        }
+                container.innerHTML = `
+                    <div class="card border-0 shadow-sm">
+                        <div class="card-header bg-white p-3"><h6 class="mb-0 fw-bold">Daftar Pengaduan Masuk</h6></div>
+                        <div class="card-body p-0">
+                            <div class="table-responsive">
+                                <table class="table table-hover mb-0 align-middle">
+                                    <thead class="table-light"><tr><th>No</th><th>Pelapor</th><th>Kategori</th><th>Tanggal</th><th>Status</th><th>Aksi</th></tr></thead>
+                                    <tbody>${rows || '<tr><td colspan="6" class="text-center py-4">Belum ada pengaduan.</td></tr>'}</tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            },
 
-        function generateSlug(text) {
-            return text.toString().toLowerCase()
-                .replace(/\s+/g, '-')
-                .replace(/[^\w\-]+/g, '')
-                .replace(/\-\-+/g, '-')
-                .replace(/^-+/, '')
-                .replace(/-+$/, '');
-        }
+            renderAdminSurvey: (container) => {
+                container.innerHTML = `
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="card border-0 shadow-sm mb-4">
+                                <div class="card-header bg-white p-3"><h6 class="mb-0 fw-bold"><i class="fas fa-link text-primary me-2"></i> Update Link Google Form</h6></div>
+                                <div class="card-body p-4">
+                                    <form onsubmit="app.saveSurveySettings(event)">
+                                        <div class="mb-3">
+                                            <label class="form-label text-muted small">URL Google Form Survey Anda</label>
+                                            <input type="url" id="inputSurveyLink" class="form-control" value="${app.survey.link}" placeholder="https://docs.google.com/forms/..." required>
+                                        </div>
+                                        <button type="submit" class="btn btn-primary"><i class="fas fa-sync-alt me-2"></i> Perbarui Link & Barcode</button>
+                                    </form>
+                                    <hr class="my-4">
+                                    <div class="alert alert-info border-0 bg-light">
+                                        <i class="fas fa-info-circle me-2"></i> QR Code akan di-generate otomatis secara realtime saat link diperbarui.
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="card border-0 shadow-sm text-center">
+                                <div class="card-header bg-white p-3"><h6 class="mb-0 fw-bold"><i class="fas fa-qrcode text-primary me-2"></i> Barcode Survey Aktif</h6></div>
+                                <div class="card-body p-5">
+                                    <img src="${app.survey.qrUrl}" alt="QR Survey" class="img-fluid border p-3 rounded bg-light mb-3" style="width: 250px; height: 250px; object-fit: contain;">
+                                    <h5 class="fw-bold mt-2">Scan Untuk Mengisi Survey</h5>
+                                    <p class="text-muted small">Barcode ini ditampilkan di halaman utama (Dashboard Publik) agar mudah diakses oleh masyarakat.</p>
+                                    <a href="${app.survey.qrUrl}" download="QRCode_Survey_Disdukcapil.png" target="_blank" class="btn btn-outline-secondary btn-sm mt-2"><i class="fas fa-download me-1"></i> Download QR Code</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            },
 
-        function handlePostSubmit(e) {
-            e.preventDefault();
-            const id = document.getElementById('writer-post-id').value || 'post-' + Date.now();
-            const title = document.getElementById('writer-title').value;
-            const content = document.getElementById('writer-content').innerHTML;
-            const fileInput = document.getElementById('writer-file');
-            
-            // Get status, enforce Draft if editor
-            let status = document.getElementById('writer-status').value;
-            if(currentUser.role !== 'admin') status = 'draft';
+            // --- STREAMING_CHUNK: Admin CRUD Actions ---
 
-            let postObj = {
-                id: id,
-                title: title,
-                slug: generateSlug(title),
-                content: content,
-                category_id: document.getElementById('writer-category').value,
-                author_id: currentUser.id, // For edits, we overwrite author_id. Or keep it? Simpler to overwrite if they edit.
-                status: status
-            };
+            generateId: () => Math.floor(Math.random() * 10000),
 
-            // Keep original author if editing
-            const existing = appData.posts.find(p=>p.id === id);
-            if(existing && existing.author_id) postObj.author_id = existing.author_id;
-
-            if (fileInput.files.length > 0) {
-                const file = fileInput.files[0];
-                const reader = new FileReader();
-                reader.onload = function(ev) {
-                    postObj.image_base64 = ev.target.result;
-                    postObj.image_filename = file.name;
-                    sendSavePost(postObj);
+            // Publik submit pengaduan
+            submitPengaduan: (e) => {
+                e.preventDefault();
+                const data = {
+                    id: app.generateId(),
+                    nama: document.getElementById('pengNama').value,
+                    nik: document.getElementById('pengNIK').value,
+                    kategori: document.getElementById('pengKategori').value,
+                    isi: document.getElementById('pengIsi').value,
+                    status: 'Baru',
+                    tanggal: new Date().toISOString().split('T')[0]
                 };
-                reader.readAsDataURL(file);
-            } else {
-                if(existing) postObj.thumbnail_url = existing.thumbnail_url;
-                sendSavePost(postObj);
-            }
-        }
+                
+                app.pengaduan.unshift(data); // Simpan ke array
+                
+                Swal.fire({
+                    title: 'Laporan Terkirim!',
+                    text: 'Terima kasih, pengaduan Anda berhasil disubmit dan akan segera kami proses.',
+                    icon: 'success',
+                    confirmButtonText: 'Selesai'
+                }).then(() => {
+                    app.navigate('home'); // Kembali ke home setelah submit
+                });
+            },
 
-        function sendSavePost(postObj) {
-            if (isDemoMode) {
-                const idx = appData.posts.findIndex(p => p.id === postObj.id);
-                if (!postObj.thumbnail_url && !postObj.image_base64) postObj.thumbnail_url = "https://images.unsplash.com/photo-1541872703-74c5e44368f9?q=80&w=600";
-                if (postObj.image_base64) postObj.thumbnail_url = postObj.image_base64; // Mock
+            // Admin update status pengaduan
+            updateStatusPengaduan: (id) => {
+                const idx = app.pengaduan.findIndex(p => p.id == id);
+                if(idx === -1) return;
+
+                Swal.fire({
+                    title: 'Update Status Pengaduan',
+                    input: 'select',
+                    inputOptions: {
+                        'Diproses': 'Sedang Diproses',
+                        'Selesai': 'Selesai Ditindaklanjuti'
+                    },
+                    inputPlaceholder: 'Pilih status baru',
+                    showCancelButton: true,
+                    confirmButtonText: 'Update'
+                }).then((result) => {
+                    if (result.isConfirmed && result.value) {
+                        app.pengaduan[idx].status = result.value;
+                        app.renderAdminPengaduan(document.getElementById('admin-content-dynamic'));
+                        Swal.fire('Diperbarui!', 'Status pengaduan berhasil diubah.', 'success');
+                    }
+                });
+            },
+
+            // Admin save link survey
+            saveSurveySettings: (e) => {
+                e.preventDefault();
+                const newLink = document.getElementById('inputSurveyLink').value;
+                app.survey.link = newLink;
+                // Generate QR Baru menggunakan API
+                app.survey.qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=${encodeURIComponent(newLink)}`;
                 
-                postObj.created_at = new Date().toISOString();
-                if (idx !== -1) appData.posts[idx] = {...appData.posts[idx], ...postObj};
-                else appData.posts.push(postObj);
-                
-                switchView('dashboard');
-            } else {
-                fetch(API_URL, {
-                    method: 'POST',
-                    body: JSON.stringify({ action: 'savePost', post: postObj, user_role: currentUser.role })
-                }).then(res => res.json()).then(res => {
-                    fetchAdminData();
+                Swal.fire({
+                    title: 'Tersimpan!', 
+                    text: 'Link Survey & Barcode berhasil diperbarui.', 
+                    icon: 'success',
+                    timer: 1500
+                }).then(() => {
+                    app.renderAdminSurvey(document.getElementById('admin-content-dynamic'));
+                });
+            },
+
+            // Modal Handlers (Artikel)
+            openModalArtikel: (data = null) => {
+                document.getElementById('formArtikel').reset();
+                if (data) {
+                    document.getElementById('modalArtikelTitle').innerText = 'Edit Artikel';
+                    document.getElementById('artId').value = data.id;
+                    document.getElementById('artTitle').value = data.title;
+                    document.getElementById('artCategory').value = data.category;
+                    document.getElementById('artStatus').value = data.status || 'Publish';
+                    document.getElementById('artImage').value = data.image;
+                    document.getElementById('artContent').value = data.content;
+                } else {
+                    document.getElementById('modalArtikelTitle').innerText = 'Tambah Artikel Baru';
+                    document.getElementById('artId').value = '';
+                    document.getElementById('artStatus').value = 'Publish';
+                }
+                app.modals.artikel.show();
+            },
+
+            saveArtikel: (e) => {
+                e.preventDefault();
+                const id = document.getElementById('artId').value;
+                const data = {
+                    title: document.getElementById('artTitle').value,
+                    category: document.getElementById('artCategory').value,
+                    status: document.getElementById('artStatus').value,
+                    image: document.getElementById('artImage').value || 'https://placehold.co/600x400/eeeeee/333333?text=No+Image',
+                    content: document.getElementById('artContent').value,
+                    date: new Date().toISOString().split('T')[0]
+                };
+
+                if (id) {
+                    const idx = app.articles.findIndex(a => a.id == id);
+                    app.articles[idx] = { ...app.articles[idx], ...data };
+                } else {
+                    data.id = app.generateId();
+                    app.articles.unshift(data); // Add to top
+                }
+
+                app.modals.artikel.hide();
+                app.adminNavigate('artikel');
+                Swal.fire('Berhasil!', 'Artikel telah disimpan.', 'success');
+            },
+
+            editArtikel: (id) => {
+                const data = app.articles.find(a => a.id == id);
+                app.openModalArtikel(data);
+            },
+
+            deleteArtikel: (id) => {
+                Swal.fire({ title: 'Hapus Artikel?', icon: 'warning', showCancelButton: true, confirmButtonText: 'Ya, Hapus' })
+                .then((result) => {
+                    if (result.isConfirmed) {
+                        app.articles = app.articles.filter(a => a.id != id);
+                        app.adminNavigate('artikel');
+                        Swal.fire('Dihapus!', 'Artikel telah dihapus.', 'success');
+                    }
+                });
+            },
+
+            // Modal Handlers (Banner)
+            openModalBanner: (data = null) => {
+                document.getElementById('formBanner').reset();
+                if (data) {
+                    document.getElementById('modalBannerTitle').innerText = 'Edit Banner';
+                    document.getElementById('banId').value = data.id;
+                    document.getElementById('banTitle').value = data.title;
+                    document.getElementById('banImage').value = data.image;
+                    document.getElementById('banLink').value = data.link;
+                } else {
+                    document.getElementById('modalBannerTitle').innerText = 'Tambah Banner Baru';
+                    document.getElementById('banId').value = '';
+                }
+                app.modals.banner.show();
+            },
+
+            saveBanner: (e) => {
+                e.preventDefault();
+                const id = document.getElementById('banId').value;
+                const data = {
+                    title: document.getElementById('banTitle').value,
+                    image: document.getElementById('banImage').value,
+                    link: document.getElementById('banLink').value || '#'
+                };
+
+                if (id) {
+                    const idx = app.banners.findIndex(b => b.id == id);
+                    app.banners[idx] = { ...app.banners[idx], ...data };
+                } else {
+                    data.id = app.generateId();
+                    app.banners.push(data);
+                }
+
+                app.modals.banner.hide();
+                app.adminNavigate('banner');
+                Swal.fire('Berhasil!', 'Banner telah disimpan.', 'success');
+            },
+
+            editBanner: (id) => {
+                const data = app.banners.find(b => b.id == id);
+                app.openModalBanner(data);
+            },
+
+            deleteBanner: (id) => {
+                Swal.fire({ title: 'Hapus Banner?', icon: 'warning', showCancelButton: true, confirmButtonText: 'Ya, Hapus' })
+                .then((result) => {
+                    if (result.isConfirmed) {
+                        app.banners = app.banners.filter(b => b.id != id);
+                        app.adminNavigate('banner');
+                        Swal.fire('Dihapus!', 'Banner telah dihapus.', 'success');
+                    }
+                });
+            },
+
+            // Modal Handlers (User)
+            openModalUser: (data = null) => {
+                document.getElementById('formUser').reset();
+                if (data) {
+                    document.getElementById('modalUserTitle').innerText = 'Edit User';
+                    document.getElementById('userId').value = data.id;
+                    document.getElementById('userName').value = data.nama;
+                    document.getElementById('userEmail').value = data.email;
+                    document.getElementById('userRole').value = data.role;
+                    document.getElementById('userStatus').value = data.status;
+                } else {
+                    document.getElementById('modalUserTitle').innerText = 'Tambah User Baru';
+                    document.getElementById('userId').value = '';
+                }
+                app.modals.user.show();
+            },
+
+            saveUser: (e) => {
+                e.preventDefault();
+                const id = document.getElementById('userId').value;
+                const data = {
+                    nama: document.getElementById('userName').value,
+                    email: document.getElementById('userEmail').value,
+                    role: document.getElementById('userRole').value,
+                    status: document.getElementById('userStatus').value
+                };
+
+                if (id) {
+                    const idx = app.users.findIndex(u => u.id == id);
+                    app.users[idx] = { ...app.users[idx], ...data };
+                } else {
+                    data.id = app.generateId();
+                    app.users.push(data);
+                }
+
+                app.modals.user.hide();
+                app.adminNavigate('user');
+                Swal.fire('Berhasil!', 'Data User telah disimpan.', 'success');
+            },
+
+            editUser: (id) => {
+                const data = app.users.find(u => u.id == id);
+                app.openModalUser(data);
+            },
+
+            deleteUser: (id) => {
+                Swal.fire({ title: 'Hapus User?', text: 'Akses user ini akan dihilangkan.', icon: 'warning', showCancelButton: true, confirmButtonText: 'Ya, Hapus' })
+                .then((result) => {
+                    if (result.isConfirmed) {
+                        app.users = app.users.filter(u => u.id != id);
+                        app.adminNavigate('user');
+                        Swal.fire('Dihapus!', 'User telah dihapus.', 'success');
+                    }
                 });
             }
-        }
+        };
 
-        function deletePost(id) {
-            if(!confirm("Yakin ingin menghapus artikel ini?")) return;
-            if(isDemoMode) {
-                appData.posts = appData.posts.filter(p => p.id !== id);
-                renderPostsTable();
-            } else {
-                fetch(API_URL, { method: 'POST', body: JSON.stringify({ action: 'deletePost', id: id }) })
-                .then(()=>fetchAdminData());
-            }
-        }
-
-        // ---------------- ADMIN FORMS (CATEGORIES, SETTINGS) ----------------
-        function renderCategoriesTable() {
-            const tbody = document.getElementById('dash-categories-table-body');
-            tbody.innerHTML = appData.categories.map(c => `
-                <tr class="hover:bg-slate-50">
-                    <td class="px-5 py-3 font-bold text-slate-800 text-sm">${c.name}</td>
-                    <td class="px-5 py-3 text-xs text-slate-500 font-mono">${c.slug}</td>
-                    <td class="px-5 py-3 text-right">
-                        <button onclick="editCategory('${c.id}', '${c.name}')" class="text-blue-600 hover:text-blue-900 bg-blue-50 p-2 rounded mr-1"><i class="fa-solid fa-pen-to-square"></i></button>
-                        <button onclick="deleteCategory('${c.id}')" class="text-rose-600 hover:text-rose-900 bg-rose-50 p-2 rounded"><i class="fa-solid fa-trash-can"></i></button>
-                    </td>
-                </tr>
-            `).join('');
-        }
-
-        function handleCategorySubmit(e) {
-            e.preventDefault();
-            const id = document.getElementById('category-edit-id').value || 'cat-' + Date.now();
-            const name = document.getElementById('category-name').value;
-            const obj = { id: id, name: name, slug: generateSlug(name) };
-            
-            if(isDemoMode) {
-                const idx = appData.categories.findIndex(c => c.id === id);
-                if(idx !== -1) appData.categories[idx] = obj; else appData.categories.push(obj);
-                document.getElementById('category-form').reset();
-                document.getElementById('category-edit-id').value = '';
-                renderCategoriesTable();
-            } else {
-                fetch(API_URL, { method: 'POST', body: JSON.stringify({ action: 'saveCategory', category: obj }) })
-                .then(()=>fetchAdminData());
-            }
-        }
-
-        function deleteCategory(id) {
-            if(!confirm("Hapus kategori ini?")) return;
-            if(isDemoMode) {
-                appData.categories = appData.categories.filter(c => c.id !== id);
-                renderCategoriesTable();
-            } else {
-                fetch(API_URL, { method: 'POST', body: JSON.stringify({ action: 'deleteCategory', id: id }) })
-                .then(()=>fetchAdminData());
-            }
-        }
-        function editCategory(id, name) {
-            document.getElementById('category-edit-id').value = id;
-            document.getElementById('category-name').value = name;
-            document.getElementById('category-form-title').innerText = "Edit Kategori";
-        }
-
-        function populateSettingsForm() {
-            const s = appData.settings;
-            document.getElementById('setting-site_title').value = s.site_title || '';
-            document.getElementById('setting-logo_url').value = s.logo_url || '';
-            document.getElementById('setting-carousel_urls').value = s.carousel_urls || '';
-            document.getElementById('setting-contact_email').value = s.contact_email || '';
-            document.getElementById('setting-office_address').value = s.office_address || '';
-            document.getElementById('setting-phone').value = s.phone || '';
-            document.getElementById('setting-copyright').value = s.copyright || '';
-        }
-
-        function handleSettingsSubmit(e) {
-            e.preventDefault();
-            const fields = ['site_title', 'logo_url', 'carousel_urls', 'contact_email', 'office_address', 'phone', 'copyright'];
-            let s = {};
-            fields.forEach(f => s[f] = document.getElementById('setting-' + f).value);
-            
-            if(isDemoMode) {
-                appData.settings = {...appData.settings, ...s};
-                applySettings();
-                populateSettingsForm(); // Refresh input values setelah simpan
-                alert("Pengaturan Berhasil Disimpan!"); // Konfirmasi eksplisit
-            } else {
-                fetch(API_URL, { method: 'POST', body: JSON.stringify({ action: 'saveSettings', settings: s }) })
-                .then(res => res.json())
-                .then(data => { 
-                    if(data.status === 'success') {
-                        alert("Pengaturan Berhasil Disimpan ke Database!");
-                        fetchAdminData();
-                    } else {
-                        alert("Gagal menyimpan pengaturan: " + data.message);
-                    }
-                })
-                .catch(err => alert("Koneksi gagal: " + err));
-            }
-        }
-
-        // User Management omitted code functions are similar to category...
-        function renderUsersTable() {
-             const tbody = document.getElementById('dash-users-table-body');
-             if(!appData.users) return;
-             tbody.innerHTML = appData.users.map(u => `
-                 <tr class="hover:bg-slate-50">
-                     <td class="px-5 py-3 font-bold text-slate-800 text-sm">${u.name}</td>
-                     <td class="px-5 py-3 text-xs text-slate-500">${u.email}</td>
-                     <td class="px-5 py-3 text-xs uppercase font-bold text-blue-700">${u.role}</td>
-                     <td class="px-5 py-3 text-right">
-                         <span class="text-[10px] text-slate-400">Data Auth API Only</span>
-                     </td>
-                 </tr>
-             `).join('');
-        }
-        function handleUserSubmit(e) { e.preventDefault(); alert("Di mode demo atau versi ini, silakan buat akun via Apps Script langsung di Sheet 'Users' untuk keamanan password."); }
-
-        // ---------------- API CALLS ----------------
-        function fetchPublicData() {
-            fetch(API_URL + "?action=getPublicData").then(res => res.json()).then(data => {
-                appData.posts = data.posts || [];
-                appData.categories = data.categories || [];
-                appData.settings = data.settings || {};
-                applySettings();
-                renderPublicHome();
-            }).catch(e => { console.error(e); resetToDemoMode(); });
-        }
-
-        function fetchAdminData() {
-            fetch(API_URL + "?action=getAdminData").then(res => res.json()).then(data => {
-                appData = data;
-                applySettings();
-                switchView('dashboard');
-            });
-        }
-
-        function saveApiUrl() {
-            const url = document.getElementById('api-url-input').value.trim();
-            if(url.includes("script.google.com")) {
-                localStorage.setItem('disdukcapil_api_url', url);
-                API_URL = url;
-                isDemoMode = false;
-                window.location.reload();
-            } else {
-                alert("URL Apps Script tidak valid!");
-            }
-        }
-        function resetToDemoMode() {
-            localStorage.removeItem('disdukcapil_api_url');
-            window.location.reload();
-        }
-
-        function copyGasCode() {
-            const code = document.getElementById('gas-code-block').innerText;
-            const textArea = document.createElement("textarea");
-            textArea.value = code;
-            document.body.appendChild(textArea);
-            textArea.select();
-            try {
-                document.execCommand('copy');
-                const text = document.getElementById('copy-text');
-                text.innerText = "Tersalin!";
-                setTimeout(() => text.innerText = "Salin Kode", 2000);
-            } catch (err) {
-                console.error('Oops, unable to copy', err);
-            }
-            document.body.removeChild(textArea);
-        }
-
-        function shareSocial(platform) {
-            const url = encodeURIComponent(window.location.href);
-            const title = encodeURIComponent(document.title);
-            if(platform === 'whatsapp') window.open(`https://api.whatsapp.com/send?text=${title} - ${url}`);
-            if(platform === 'facebook') window.open(`https://www.facebook.com/sharer/sharer.php?u=${url}`);
-            if(platform === 'twitter') window.open(`https://twitter.com/intent/tweet?url=${url}&text=${title}`);
-            if(platform === 'copy') {
-                const textArea = document.createElement("textarea");
-                textArea.value = window.location.href;
-                document.body.appendChild(textArea);
-                textArea.select();
-                try {
-                    document.execCommand('copy');
-                    alert('Tautan berhasil disalin!');
-                } catch (err) {
-                    console.error('Oops, unable to copy', err);
-                }
-                document.body.removeChild(textArea);
-            }
-        }
+        // Initialize App on DOM Load
+        window.addEventListener('DOMContentLoaded', app.init);
     </script>
 </body>
 </html>
